@@ -3,12 +3,14 @@
 import { useState } from "react";
 import Link from "next/link";
 import Icon from "@/components/ui/AppIcon";
+import AuthButton from "./AuthButton";
 
 interface HeaderProps {
     className?: string;
+    onLoginClick: () => void;
 }
 
-const Header = ({ className = "" }: HeaderProps) => {
+const Header = ({ className = "", onLoginClick }: HeaderProps) => {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     const navigationItems = [
@@ -87,7 +89,7 @@ const Header = ({ className = "" }: HeaderProps) => {
                             </defs>
                         </svg>
                         <span className="text-xl font-bold font-headline text-foreground">
-                            CoverCraft AI
+                            HireQuill
                         </span>
                     </Link>
 
@@ -112,12 +114,7 @@ const Header = ({ className = "" }: HeaderProps) => {
                     </nav>
 
                     <div className="hidden md:flex items-center space-x-4">
-                        <Link
-                            href="/main-landing-page"
-                            className="px-6 py-2.5 text-sm font-semibold text-primary-foreground bg-destructive rounded-md hover:shadow-lg hover:scale-105 transition-all duration-200 font-cta"
-                        >
-                            Login
-                        </Link>
+                        <AuthButton onLoginClick={onLoginClick} />
                     </div>
 
                     <button
@@ -148,13 +145,11 @@ const Header = ({ className = "" }: HeaderProps) => {
                             </Link>
                         ))}
                         <div className="pt-4 border-t border-border">
-                            <Link
-                                href="/main-landing-page"
-                                onClick={() => setIsMobileMenuOpen(false)}
-                                className="block w-full px-6 py-3 text-center text-sm font-semibold text-primary-foreground bg-destructive rounded-md hover:shadow-lg transition-all duration-200 font-cta"
-                            >
-                                Login
-                            </Link>
+                            <AuthButton
+                                onLoginClick={onLoginClick}
+                                className="block w-full px-6 py-3 text-center"
+                                onMobileClick={() => setIsMobileMenuOpen(false)}
+                            />
                         </div>
                     </nav>
                 </div>

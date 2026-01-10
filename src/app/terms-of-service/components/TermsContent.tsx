@@ -45,12 +45,12 @@ const TermsContent = () => {
         {
             id: "acceptance",
             title: "1. Acceptance of Terms",
-            content: `By accessing or using CoverCraft AI ("Service"), you agree to be bound by these Terms of Service ("Terms"). If you disagree with any part of these terms, you may not access the Service.\n\nThese Terms apply to all visitors, users, and others who access or use the Service. By using the Service, you represent that you are at least 18 years old and have the legal capacity to enter into these Terms.`,
+            content: `By accessing or using HireQuill AI ("Service"), you agree to be bound by these Terms of Service ("Terms"). If you disagree with any part of these terms, you may not access the Service.\n\nThese Terms apply to all visitors, users, and others who access or use the Service. By using the Service, you represent that you are at least 18 years old and have the legal capacity to enter into these Terms.`,
         },
         {
             id: "service-description",
             title: "2. Service Description",
-            content: `CoverCraft AI is an AI-powered cover letter generation platform that helps job seekers create personalized, professional cover letters. The Service includes:\n\n• AI-powered cover letter generation based on uploaded CV/resume data\n• Customization options for job descriptions and company information\n• Storage and management of generated cover letters\n• Access to generation history and analytics\n\nThe Service uses artificial intelligence technology to analyze your CV and generate cover letters. While we strive for accuracy and quality, AI-generated content may require review and editing before use in actual job applications.`,
+            content: `HireQuill AI is an AI-powered cover letter generation platform that helps job seekers create personalized, professional cover letters. The Service includes:\n\n• AI-powered cover letter generation based on uploaded CV/resume data\n• Customization options for job descriptions and company information\n• Storage and management of generated cover letters\n• Access to generation history and analytics\n\nThe Service uses artificial intelligence technology to analyze your CV and generate cover letters. While we strive for accuracy and quality, AI-generated content may require review and editing before use in actual job applications.`,
         },
         {
             id: "user-accounts",
@@ -75,7 +75,7 @@ const TermsContent = () => {
         {
             id: "intellectual-property",
             title: "7. Intellectual Property Rights",
-            content: `**Your Content Ownership:**\nYou retain all ownership rights to:\n• Your uploaded CV/resume content\n• Generated cover letters created using the Service\n• Any modifications you make to generated content\n\nBy using the Service, you grant us a limited license to:\n• Process your CV data to generate cover letters\n• Store your content on our servers\n• Use anonymized, aggregated data to improve our AI models\n\n**Our Intellectual Property:**\nThe Service, including its original content, features, functionality, and underlying AI technology, is owned by CoverCraft AI and is protected by international copyright, trademark, and other intellectual property laws.\n\n**Generated Content:**\nWhile you own the generated cover letters, you acknowledge that:\n• AI-generated content may not be entirely unique\n• Similar content may be generated for other users\n• You are responsible for reviewing and editing generated content\n• We do not guarantee the originality of AI-generated text`,
+            content: `**Your Content Ownership:**\nYou retain all ownership rights to:\n• Your uploaded CV/resume content\n• Generated cover letters created using the Service\n• Any modifications you make to generated content\n\nBy using the Service, you grant us a limited license to:\n• Process your CV data to generate cover letters\n• Store your content on our servers\n• Use anonymized, aggregated data to improve our AI models\n\n**Our Intellectual Property:**\nThe Service, including its original content, features, functionality, and underlying AI technology, is owned by HireQuill AI and is protected by international copyright, trademark, and other intellectual property laws.\n\n**Generated Content:**\nWhile you own the generated cover letters, you acknowledge that:\n• AI-generated content may not be entirely unique\n• Similar content may be generated for other users\n• You are responsible for reviewing and editing generated content\n• We do not guarantee the originality of AI-generated text`,
         },
         {
             id: "user-responsibilities",
@@ -95,12 +95,12 @@ const TermsContent = () => {
         {
             id: "liability",
             title: "11. Limitation of Liability",
-            content: `**Disclaimer:**\nTo the maximum extent permitted by law, CoverCraft AI shall not be liable for:\n• Any indirect, incidental, special, consequential, or punitive damages\n• Loss of profits, revenue, data, or business opportunities\n• Damages resulting from use or inability to use the Service\n• Damages resulting from AI-generated content quality or accuracy\n• Damages resulting from unauthorized access to your account\n• Damages resulting from third-party services or integrations\n\n**Maximum Liability:**\nOur total liability to you for all claims arising from or related to the Service shall not exceed the amount you paid us in the 12 months preceding the claim, or $100, whichever is greater.\n\n**AI-Generated Content:**\nWe specifically disclaim liability for:\n• Accuracy or quality of generated cover letters\n• Job application outcomes or hiring decisions\n• Plagiarism or similarity to other content\n• Errors or omissions in generated text\n\nYou acknowledge that AI-generated content requires human review and editing before use in actual job applications.`,
+            content: `**Disclaimer:**\nTo the maximum extent permitted by law, HireQuill AI shall not be liable for:\n• Any indirect, incidental, special, consequential, or punitive damages\n• Loss of profits, revenue, data, or business opportunities\n• Damages resulting from use or inability to use the Service\n• Damages resulting from AI-generated content quality or accuracy\n• Damages resulting from unauthorized access to your account\n• Damages resulting from third-party services or integrations\n\n**Maximum Liability:**\nOur total liability to you for all claims arising from or related to the Service shall not exceed the amount you paid us in the 12 months preceding the claim, or $100, whichever is greater.\n\n**AI-Generated Content:**\nWe specifically disclaim liability for:\n• Accuracy or quality of generated cover letters\n• Job application outcomes or hiring decisions\n• Plagiarism or similarity to other content\n• Errors or omissions in generated text\n\nYou acknowledge that AI-generated content requires human review and editing before use in actual job applications.`,
         },
         {
             id: "dispute-resolution",
             title: "12. Dispute Resolution",
-            content: `**Governing Law:**\nThese Terms shall be governed by and construed in accordance with the laws of the United States, without regard to its conflict of law provisions.\n\n**Informal Resolution:**\nBefore filing a claim, you agree to contact us at support@covercraftai.com to attempt to resolve the dispute informally. We will attempt to resolve disputes within 30 days.\n\n**Arbitration Agreement:**\nIf informal resolution fails, you agree that disputes will be resolved through binding arbitration rather than in court, except that you may assert claims in small claims court if they qualify.\n\n**Class Action Waiver:**\nYou agree to resolve disputes with us on an individual basis and waive your right to participate in class actions or class arbitrations.\n\n**Exceptions:**\nEither party may seek injunctive or other equitable relief in court to prevent infringement of intellectual property rights.`,
+            content: `**Governing Law:**\nThese Terms shall be governed by and construed in accordance with the laws of the United States, without regard to its conflict of law provisions.\n\n**Informal Resolution:**\nBefore filing a claim, you agree to contact us at support@HireQuillai.com to attempt to resolve the dispute informally. We will attempt to resolve disputes within 30 days.\n\n**Arbitration Agreement:**\nIf informal resolution fails, you agree that disputes will be resolved through binding arbitration rather than in court, except that you may assert claims in small claims court if they qualify.\n\n**Class Action Waiver:**\nYou agree to resolve disputes with us on an individual basis and waive your right to participate in class actions or class arbitrations.\n\n**Exceptions:**\nEither party may seek injunctive or other equitable relief in court to prevent infringement of intellectual property rights.`,
         },
         {
             id: "changes",
@@ -110,7 +110,7 @@ const TermsContent = () => {
         {
             id: "contact",
             title: "14. Contact Information",
-            content: `For questions about these Terms of Service, please contact us:\n\n**Email:** support@covercraftai.com\n**Response Time:** Within 48 hours for general inquiries\n**Support Hours:** Monday-Friday, 9:00 AM - 6:00 PM EST\n\n**Mailing Address:**\nCoverCraft AI\nLegal Department\n123 Innovation Drive\nSan Francisco, CA 94102\nUnited States\n\n**Legal Notices:**\nFor legal notices or service of process, please use the mailing address above and mark correspondence "ATTN: Legal Department."`,
+            content: `For questions about these Terms of Service, please contact us:\n\n**Email:** support@HireQuillai.com\n**Response Time:** Within 48 hours for general inquiries\n**Support Hours:** Monday-Friday, 9:00 AM - 6:00 PM EST\n\n**Mailing Address:**\nHireQuill AI\nLegal Department\n123 Innovation Drive\nSan Francisco, CA 94102\nUnited States\n\n**Legal Notices:**\nFor legal notices or service of process, please use the mailing address above and mark correspondence "ATTN: Legal Department."`,
         },
     ];
 
@@ -293,7 +293,7 @@ const TermsContent = () => {
                                             reach out to our support team.
                                         </p>
                                         <a
-                                            href="mailto:support@covercraftai.com"
+                                            href="mailto:support@HireQuillai.com"
                                             className="inline-flex items-center space-x-2 text-sm font-semibold text-primary hover:text-primary/80 transition-colors font-cta"
                                         >
                                             <Icon
@@ -301,7 +301,7 @@ const TermsContent = () => {
                                                 size={16}
                                             />
                                             <span>
-                                                support@covercraftai.com
+                                                support@HireQuillai.com
                                             </span>
                                         </a>
                                     </div>

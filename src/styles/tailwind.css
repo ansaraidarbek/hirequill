@@ -51,7 +51,7 @@
         --color-error: #ef4444; /* red-500 - Constructive problem solving */
         --color-error-foreground: #ffffff; /* white */
 
-        --color-destructive: black; /* red-600 - Call-to-action urgency */
+        --color-destructive: #1e293b; /* slate-800 - Professional destructive action */
         --color-destructive-foreground: #ffffff; /* white */
 
         /* Additional Brand Colors */
@@ -87,6 +87,69 @@
         --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
         --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.12);
         --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.18);
+    }
+
+    @media (prefers-color-scheme: dark) {
+        :root {
+            /* Primary Colors */
+            --color-primary: #3b82f6; /* blue-500 - Lighter for dark mode */
+            --color-primary-foreground: #ffffff; /* white */
+
+            /* Secondary Colors */
+            --color-secondary: #8b5cf6; /* violet-500 - Lighter for dark mode */
+            --color-secondary-foreground: #ffffff; /* white */
+
+            /* Accent Colors */
+            --color-accent: #10b981; /* emerald-500 - Slightly lighter */
+            --color-accent-foreground: #ffffff; /* white */
+
+            /* Background Colors */
+            --color-background: #0f172a; /* slate-900 - Dark background */
+            --color-foreground: #f1f5f9; /* slate-100 - Light text */
+
+            /* Surface Colors */
+            --color-card: #1e293b; /* slate-800 - Dark card */
+            --color-card-foreground: #f1f5f9; /* slate-100 */
+
+            /* Popover Colors */
+            --color-popover: #1e293b; /* slate-800 */
+            --color-popover-foreground: #f1f5f9; /* slate-100 */
+
+            /* Muted Colors */
+            --color-muted: #334155; /* slate-700 - Dark muted */
+            --color-muted-foreground: #94a3b8; /* slate-400 - Lighter text for dark */
+
+            /* Border & Input */
+            --color-border: #334155; /* slate-700 - Dark borders */
+            --color-input: #334155; /* slate-700 */
+            --color-ring: #3b82f6; /* blue-500 */
+
+            /* Semantic Colors */
+            --color-success: #10b981; /* emerald-500 */
+            --color-success-foreground: #ffffff; /* white */
+
+            --color-warning: #f59e0b; /* amber-500 */
+            --color-warning-foreground: #ffffff; /* white */
+
+            --color-error: #ef4444; /* red-500 */
+            --color-error-foreground: #ffffff; /* white */
+
+            --color-destructive: #475569; /* slate-600 - Visible on dark background */
+            --color-destructive-foreground: #ffffff; /* white */
+
+            /* Additional Brand Colors */
+            --color-trust: #6366f1; /* indigo-500 */
+            --color-trust-foreground: #ffffff; /* white */
+
+            --color-surface-dark: #0f172a; /* slate-900 - Even darker for dark mode */
+            --color-surface-dark-foreground: #f1f5f9; /* slate-100 */
+
+            /* Shadows - Adjusted for dark mode */
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+            --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.6);
+        }
     }
 }
 

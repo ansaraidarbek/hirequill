@@ -119,7 +119,7 @@ export default function PrivacyPolicyContent() {
                                 title="Introduction"
                             >
                                 <p>
-                                    Welcome to CoverCraft AI. We're committed to
+                                    Welcome to HireQuill AI. We're committed to
                                     protecting your privacy and being
                                     transparent about how we handle your data.
                                     This policy explains what information we
@@ -128,7 +128,7 @@ export default function PrivacyPolicyContent() {
                                     information.
                                 </p>
                                 <p>
-                                    By using CoverCraft AI, you agree to the
+                                    By using HireQuill AI, you agree to the
                                     practices described in this policy. We've
                                     written this in plain language because we
                                     believe privacy policies should be
@@ -304,10 +304,10 @@ export default function PrivacyPolicyContent() {
                                 title="Children's Privacy"
                             >
                                 <p>
-                                    CoverCraft AI is not intended for users
-                                    under 16 years of age. We do not knowingly
-                                    collect personal information from children.
-                                    If we discover that we have inadvertently
+                                    HireQuill AI is not intended for users under
+                                    16 years of age. We do not knowingly collect
+                                    personal information from children. If we
+                                    discover that we have inadvertently
                                     collected data from a child, we will delete
                                     it immediately.
                                 </p>
@@ -351,7 +351,7 @@ export default function PrivacyPolicyContent() {
                                     all inquiries promptly and transparently.
                                 </p>
                                 <ContactInfo
-                                    email="privacy@covercraftai.com"
+                                    email="privacy@HireQuillai.com"
                                     responseTime="We respond to all privacy inquiries within 48 hours"
                                 />
                             </PolicySection>

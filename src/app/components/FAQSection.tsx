@@ -26,7 +26,7 @@ const FAQSection = () => {
         {
             id: 3,
             question: "How many cover letters can I generate?",
-            answer: "Free users get 3 cover letters per month to test the service. Monthly plan subscribers get unlimited generations with no restrictions. Most users apply to 30-60 jobs per month, and our unlimited plan supports high-volume job searching without limits.",
+            answer: "Free users get 2 cover letters per month to test the service. Monthly plan subscribers get unlimited generations with no restrictions. Most users apply to 30-60 jobs per month, and our unlimited plan supports high-volume job searching without limits.",
         },
         {
             id: 4,
@@ -76,7 +76,7 @@ const FAQSection = () => {
                         Frequently Asked Questions
                     </h2>
                     <p className="text-lg text-muted-foreground max-w-2xl mx-auto font-body">
-                        Everything you need to know about CoverCraft AI
+                        Everything you need to know about HireQuill AI
                     </p>
                 </div>
 

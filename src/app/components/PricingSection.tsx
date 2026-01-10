@@ -26,7 +26,7 @@ const PricingSection = () => {
             period: "forever",
             description: "Perfect for testing the waters",
             features: [
-                "3 cover letters per month",
+                "2 cover letters per month",
                 "Advanced AI generation",
                 "PDF download",
                 "Email support",
