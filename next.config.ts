@@ -37,6 +37,11 @@ const nextConfig: NextConfig = {
         });
         return config;
     },
+    allowedDevOrigins: [
+        "unsystematized-unreprehensible-julienne.ngrok-free.dev",
+        "*.ngrok-free.dev",
+        "*.ngrok-free.app",
+    ],
 };
 
 export default nextConfig;

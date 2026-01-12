@@ -16,7 +16,7 @@ export default function PageClient() {
     return (
         <>
             <Header onLoginClick={handleLoginClick} />
-            <MainLandingInteractive />
+            <MainLandingInteractive onLoginClick={handleLoginClick} />
             <Footer />
             <SignIn isOpen={isSignInOpen} onClose={() => setIsSignInOpen(false)} />
         </>

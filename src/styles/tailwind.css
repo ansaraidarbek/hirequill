@@ -51,7 +51,7 @@
         --color-error: #ef4444; /* red-500 - Constructive problem solving */
         --color-error-foreground: #ffffff; /* white */
 
-        --color-destructive: #1e293b; /* slate-800 - Professional destructive action */
+        --color-destructive: black; /* red-600 - Call-to-action urgency */
         --color-destructive-foreground: #ffffff; /* white */
 
         /* Additional Brand Colors */

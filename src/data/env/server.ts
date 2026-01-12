@@ -9,7 +9,9 @@ export const env = createEnv({
         DB_PORT: z.string().min(1),
         DB_NAME: z.string().min(1),
         CLERK_SECRET_KEY: z.string().min(1),
-        CLERK_WEBHOOK_SECRET: z.string().min(1),
+        CLERK_WEBHOOK_SIGNING_SECRET: z.string().min(1),
+        SUPABASE_URL: z.string().min(1),
+        SUPABASE_SERVICE_ROLE_KEY: z.string().min(1),
     },
     createFinalSchema: (env) => {
         return z
