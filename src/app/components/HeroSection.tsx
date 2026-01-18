@@ -106,7 +106,7 @@ const HeroSection = ({ onLoginClick }: HeroSectionProps) => {
                     </div>
 
                     <div className="lg:pl-8">
-                        <GenerateCoverLetter />
+                        <GenerateCoverLetter onLoginClick={onLoginClick} />
                     </div>
                 </div>
             </div>

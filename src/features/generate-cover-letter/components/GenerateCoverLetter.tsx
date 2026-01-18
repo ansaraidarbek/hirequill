@@ -1,15 +1,152 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Icon from "@/components/ui/AppIcon";
+import { useAuth } from "@clerk/nextjs";
 
-const GenerateCoverLetter = () => {
-    const [companyName, setCompanyName] = useState("");
-    const [positionTitle, setPositionTitle] = useState("");
-    const [jobDescription, setJobDescription] = useState("");
-    const [cvFile, setCvFile] = useState<File | null>(null);
+const SESSION_STORAGE_KEY = "coverLetterFormData";
+
+interface StoredFormData {
+    companyName: string;
+    positionTitle: string;
+    jobDescription: string;
+    cvFileData?: {
+        base64: string;
+        fileName: string;
+        fileType: string;
+    };
+    shouldGenerate: boolean;
+}
+
+// Helper function to convert File to base64
+const fileToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result as string);
+        reader.onerror = (error) => reject(error);
+    });
+};
+
+// Helper function to convert base64 to File
+const base64ToFile = (
+    base64: string,
+    fileName: string,
+    fileType: string,
+): File => {
+    const arr = base64.split(",");
+    const mime = arr[0].match(/:(.*?);/)?.[1] || fileType;
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+    while (n--) {
+        u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new File([u8arr], fileName, { type: mime });
+};
+const InitialData: StoredFormData = {
+    companyName: "",
+    positionTitle: "",
+    jobDescription: "",
+    cvFileData: undefined,
+    shouldGenerate: false,
+};
+// Get data from sessionStorage and delete it
+const getFromSessionStorage = (): StoredFormData => {
+    if (typeof window === "undefined") return structuredClone(InitialData);
+
+    const stored = sessionStorage.getItem(SESSION_STORAGE_KEY);
+    if (!stored) return structuredClone(InitialData);
+
+    try {
+        const data = JSON.parse(stored);
+        sessionStorage.removeItem(SESSION_STORAGE_KEY);
+        return data;
+    } catch {
+        sessionStorage.removeItem(SESSION_STORAGE_KEY);
+        return structuredClone(InitialData);
+    }
+};
+
+const isToGenerate = (data: StoredFormData): boolean => {
+    return Boolean(
+        data &&
+        data.companyName &&
+        data.positionTitle &&
+        data.cvFileData &&
+        data.shouldGenerate,
+    );
+};
+
+const isDataProvided = (data: StoredFormData): boolean => {
+    return Boolean(
+        data && data.companyName && data.positionTitle && data.cvFileData,
+    );
+};
+
+// Save data to sessionStorage
+const saveToSessionStorage = (data: StoredFormData) => {
+    if (typeof window === "undefined") return;
+    sessionStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(data));
+};
+
+const GenerateCoverLetter = ({
+    onLoginClick,
+}: {
+    onLoginClick: () => void;
+}) => {
+    const [data, setData] = useState<StoredFormData>(InitialData);
+    const [hydrated, setHydrated] = useState(false);
+
     const [isGenerating, setIsGenerating] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const { isSignedIn } = useAuth();
+
+    const setCvFile = useCallback((file: File | null) => {
+        //conveert file to base64 and store in data state
+        if (file) {
+            fileToBase64(file)
+                .then((base64) => {
+                    setData((prev) => ({
+                        ...prev,
+                        cvFileData: {
+                            base64,
+                            fileName: file.name,
+                            fileType: file.type,
+                        },
+                    }));
+                })
+                .catch((err) => {
+                    console.error("Error converting file to base64:", err);
+                    setError("Failed to read file. Please try again.");
+                });
+        }
+    }, []);
+
+    // Extract generation logic to be reusable
+    const performGeneration = useCallback(async (data: StoredFormData) => {
+        setIsGenerating(true);
+        setError(null);
+
+        try {
+            // TODO: Implement actual API call to generate cover letter
+            // For now, simulate API call
+            await new Promise((resolve) => setTimeout(resolve, 2000));
+        } catch (err) {
+            setError("Failed to generate cover letter. Please try again.");
+            console.error("Error generating cover letter:", err);
+        } finally {
+            setIsGenerating(false);
+        }
+    }, []);
+
+    useEffect(() => {
+        const stored = getFromSessionStorage(); // now runs only on client
+        setData(stored);
+        if (isToGenerate(stored)) {
+            performGeneration(stored);
+        }
+    }, []);
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -35,12 +172,18 @@ const GenerateCoverLetter = () => {
     };
 
     const handleDownloadFile = () => {
-        if (!cvFile) return;
-        
-        const url = URL.createObjectURL(cvFile);
+        if (!data.cvFileData) return;
+
+        const url = URL.createObjectURL(
+            base64ToFile(
+                data.cvFileData.base64,
+                data.cvFileData.fileName,
+                data.cvFileData.fileType,
+            ),
+        );
         const link = document.createElement("a");
         link.href = url;
-        link.download = cvFile.name;
+        link.download = data.cvFileData.fileName;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -48,45 +191,42 @@ const GenerateCoverLetter = () => {
     };
 
     const handleRemoveFile = () => {
-        setCvFile(null);
+        setData((prev) => ({
+            ...prev,
+            cvFileData: undefined,
+        }));
         setError(null);
         // Reset the file input
-        const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
+        const fileInput = document.querySelector(
+            'input[type="file"]',
+        ) as HTMLInputElement;
         if (fileInput) {
             fileInput.value = "";
         }
     };
 
     const handleGenerate = async () => {
-        if (!companyName || !positionTitle || !cvFile) {
-            setError("Please fill in all fields");
+        // Check if user is authenticated
+        if (!isSignedIn) {
+            // Save current data to sessionStorage with shouldGenerate flag
+            try {
+                saveToSessionStorage({
+                    ...data,
+                    shouldGenerate: true,
+                });
+            } catch (err) {
+                console.error("Error saving to sessionStorage:", err);
+                setError("Failed to save data. Please try again.");
+                return;
+            }
+
+            // Open login modal
+            onLoginClick();
             return;
         }
 
-        setIsGenerating(true);
-        setError(null);
-
-        try {
-            // TODO: Implement actual API call to generate cover letter
-            // For now, simulate API call
-            await new Promise((resolve) => setTimeout(resolve, 2000));
-
-            console.log("Generating cover letter with:", {
-                companyName,
-                positionTitle,
-                jobDescription,
-                cvFile: cvFile.name,
-            });
-
-            // TODO: Handle the generated cover letter (redirect, show modal, etc.)
-            // For now, just log success
-            console.log("Cover letter generated successfully!");
-        } catch (err) {
-            setError("Failed to generate cover letter. Please try again.");
-            console.error("Error generating cover letter:", err);
-        } finally {
-            setIsGenerating(false);
-        }
+        // User is authenticated, proceed with generation using current data
+        await performGeneration(data);
     };
 
     return (
@@ -108,7 +248,7 @@ const GenerateCoverLetter = () => {
                     <label className="block text-sm font-medium text-foreground mb-2 font-body">
                         Upload Your CV
                     </label>
-                    {!cvFile ? (
+                    {!data.cvFileData ? (
                         // Step 1: Upload file if none is uploaded
                         <label className="block border-2 border-dashed border-border rounded-lg p-8 text-center hover:border-primary transition-colors cursor-pointer bg-muted/30">
                             <input
@@ -143,7 +283,7 @@ const GenerateCoverLetter = () => {
                                     variant="solid"
                                 />
                                 <span className="text-sm text-foreground font-semibold font-body truncate">
-                                    {cvFile.name}
+                                    {data.cvFileData.fileName}
                                 </span>
                             </div>
                             <div className="flex items-center space-x-2 flex-shrink-0">
@@ -183,8 +323,13 @@ const GenerateCoverLetter = () => {
                     <input
                         type="text"
                         placeholder="Company Name"
-                        value={companyName}
-                        onChange={(e) => setCompanyName(e.target.value)}
+                        value={data.companyName}
+                        onChange={(e) =>
+                            setData((prev) => ({
+                                ...prev,
+                                companyName: e.target.value,
+                            }))
+                        }
                         className="w-full px-4 py-3 border border-input rounded-lg focus:outline-none focus:ring-2 focus:ring-ring bg-background text-foreground font-body"
                     />
                 </div>
@@ -196,20 +341,33 @@ const GenerateCoverLetter = () => {
                     <input
                         type="text"
                         placeholder="Position Title"
-                        value={positionTitle}
-                        onChange={(e) => setPositionTitle(e.target.value)}
+                        value={data.positionTitle}
+                        onChange={(e) =>
+                            setData((prev) => ({
+                                ...prev,
+                                positionTitle: e.target.value,
+                            }))
+                        }
                         className="w-full px-4 py-3 border border-input rounded-lg focus:outline-none focus:ring-2 focus:ring-ring bg-background text-foreground font-body"
                     />
                 </div>
 
                 <div>
                     <label className="block text-sm font-medium text-foreground mb-2 font-body">
-                        Job Description <span className="text-muted-foreground font-normal">(Optional)</span>
+                        Job Description{" "}
+                        <span className="text-muted-foreground font-normal">
+                            (Optional)
+                        </span>
                     </label>
                     <textarea
                         placeholder="Paste the job description here..."
-                        value={jobDescription}
-                        onChange={(e) => setJobDescription(e.target.value)}
+                        value={data.jobDescription}
+                        onChange={(e) =>
+                            setData((prev) => ({
+                                ...prev,
+                                jobDescription: e.target.value,
+                            }))
+                        }
                         rows={3}
                         className="w-full px-4 py-3 border border-input rounded-lg focus:outline-none focus:ring-2 focus:ring-ring bg-background text-foreground font-body resize-y"
                     />
@@ -223,7 +381,7 @@ const GenerateCoverLetter = () => {
 
                 <button
                     onClick={handleGenerate}
-                    disabled={!companyName || !positionTitle || !cvFile || isGenerating}
+                    disabled={!isDataProvided(data) || isGenerating}
                     className="w-full px-6 py-4 bg-primary text-primary-foreground rounded-lg font-semibold hover:shadow-lg hover:scale-105 transition-all duration-200 font-cta flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                 >
                     {isGenerating ? (
