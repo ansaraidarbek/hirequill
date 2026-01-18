@@ -1,3 +1,4 @@
+import { getSubscriptionByUserId } from "@/db/subscriptions/subscriptions";
 import { auth } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
 import z from "zod";
@@ -30,7 +31,7 @@ const CoverLetterRequestSchema = z.object({
         })
 });
 
-type CoverLetterRequest = z.infer<typeof CoverLetterRequestSchema>;
+export type CoverLetterRequest = z.infer<typeof CoverLetterRequestSchema>;
 
 export async function POST(req: NextRequest) {
     try {
@@ -66,20 +67,12 @@ export async function POST(req: NextRequest) {
 
         const validatedData: CoverLetterRequest = validationResult.data;
 
-        // Data validation successful - log the received data
-        console.log("✅ Cover letter request validated successfully:");
-        console.log({
-            userId,
-            companyName: validatedData.companyName,
-            positionTitle: validatedData.positionTitle,
-            jobDescriptionLength: validatedData.jobDescription?.length || 0,
-            fileName: validatedData.cvFileData.fileName,
-            fileType: validatedData.cvFileData.fileType,
-            fileSize: validatedData.cvFileData.base64.length,
-        });
-
-        // TODO: Implement actual cover letter generation logic here
-        // For now, return success response confirming data was received
+        // check from the database whether current user has subscription 
+        // if save his CV to database
+        const subscription = await getSubscriptionByUserId(userId);
+        if (subscription && (subscription?.plan === 'monthly' || subscription?.plan === 'forever')) {
+            CreateCv({user: {id: userId}, subscription, data: validatedData});
+        }
 
         return NextResponse.json(
             {

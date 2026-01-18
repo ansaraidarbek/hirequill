@@ -1,6 +1,5 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import Icon from "@/components/ui/AppIcon";
 import { SignedOut } from "@clerk/nextjs";
 import GenerateCoverLetter from "@/features/generate-cover-letter";
