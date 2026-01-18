@@ -34,3 +34,12 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## ToDo
+
+- When user creates add user and subscription to database
+- Checkout subscription procedure with lemonsqueezy
+- Whenever subscription is okay allower user to save CVs to database
+- After CV is saved start process of generating cover letters based on saved CVs
+- Update metadata of the user user_company_weekly_usage and profiles
+- Return cover letter to frontend
