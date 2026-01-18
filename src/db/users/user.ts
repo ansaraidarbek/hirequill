@@ -3,7 +3,7 @@ import { createdAt, updatedAt } from "../schemaHelpers";
 import { revalidateUserCache } from "../cache/user";
 import { supabaseAdmin } from "../client";
 
-export const UserTable = pgTable("users", {
+export const UserTable = pgTable("profiles", {
     id: varchar().primaryKey(),
     name: varchar().notNull(),
     imageUrl: varchar().notNull(),

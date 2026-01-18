@@ -72,7 +72,9 @@ export async function POST(req: NextRequest) {
         // if save his CV to database
         const subscription = await getSubscriptionByUserId(userId);
         if (subscription && (subscription?.plan === 'monthly' || subscription?.plan === 'forever')) {
-            CreateCv({user: {id: userId}, subscription, data: validatedData});
+            CreateCv({userId, subscription, data: validatedData});
+        } else {
+            // generate cover letter without saving CV
         }
 
         return NextResponse.json(
