@@ -96,8 +96,6 @@ const GenerateCoverLetter = ({
     onLoginClick: () => void;
 }) => {
     const [data, setData] = useState<StoredFormData>(InitialData);
-    const [hydrated, setHydrated] = useState(false);
-
     const [isGenerating, setIsGenerating] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const { isSignedIn } = useAuth();
@@ -124,16 +122,40 @@ const GenerateCoverLetter = ({
     }, []);
 
     // Extract generation logic to be reusable
-    const performGeneration = useCallback(async (data: StoredFormData) => {
+    const performGeneration = useCallback(async (formData: StoredFormData) => {
         setIsGenerating(true);
         setError(null);
 
         try {
-            // TODO: Implement actual API call to generate cover letter
-            // For now, simulate API call
-            await new Promise((resolve) => setTimeout(resolve, 2000));
+            // Prepare data without shouldGenerate flag
+            const { shouldGenerate, ...dataToSend } = formData;
+
+            const response = await fetch("/api/cover-letter", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(dataToSend),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(
+                    errorData.message ||
+                        `Server error: ${response.status} ${response.statusText}`
+                );
+            }
+
+            const result = await response.json();
+            console.log("Cover letter generation successful:", result);
+            
+            // TODO: Handle the generated cover letter (redirect, show modal, etc.)
         } catch (err) {
-            setError("Failed to generate cover letter. Please try again.");
+            const errorMessage =
+                err instanceof Error
+                    ? err.message
+                    : "Failed to generate cover letter. Please try again.";
+            setError(errorMessage);
             console.error("Error generating cover letter:", err);
         } finally {
             setIsGenerating(false);
@@ -143,10 +165,11 @@ const GenerateCoverLetter = ({
     useEffect(() => {
         const stored = getFromSessionStorage(); // now runs only on client
         setData(stored);
-        if (isToGenerate(stored)) {
+        if (isToGenerate(stored) && isSignedIn) {
+            // Only auto-generate if user is signed in
             performGeneration(stored);
         }
-    }, []);
+    }, [isSignedIn, performGeneration]);
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
