@@ -99,6 +99,7 @@ const GenerateCoverLetter = ({
     const [isGenerating, setIsGenerating] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const { isSignedIn } = useAuth();
+    const [coverLetter, setCoverLetter] = useState<string | null>(null);
 
     const setCvFile = useCallback((file: File | null) => {
         //conveert file to base64 and store in data state
@@ -148,7 +149,7 @@ const GenerateCoverLetter = ({
 
             const result = await response.json();
             console.log("Cover letter generation successful:", result);
-            
+            setCoverLetter(result);
             // TODO: Handle the generated cover letter (redirect, show modal, etc.)
         } catch (err) {
             const errorMessage =
