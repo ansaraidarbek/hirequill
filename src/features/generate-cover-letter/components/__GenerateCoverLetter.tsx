@@ -3,7 +3,9 @@
 import { useState, useEffect, useCallback } from "react";
 import Icon from "@/components/ui/AppIcon";
 import { useAuth } from "@clerk/nextjs";
-
+import { Limitations } from "@/db/types/limitationType";
+import { useSignInModal } from "@/hooks/useSignIn";
+import { CoverLetterInformation } from "@/components/utils/prepareInformation";
 const SESSION_STORAGE_KEY = "coverLetterFormData";
 
 interface StoredFormData {
@@ -60,10 +62,8 @@ const getFromSessionStorage = (): StoredFormData => {
 
     try {
         const data = JSON.parse(stored);
-        sessionStorage.removeItem(SESSION_STORAGE_KEY);
         return data;
     } catch {
-        sessionStorage.removeItem(SESSION_STORAGE_KEY);
         return structuredClone(InitialData);
     }
 };
@@ -90,16 +90,28 @@ const saveToSessionStorage = (data: StoredFormData) => {
     sessionStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(data));
 };
 
+interface GenerateCoverLetterProps {
+    onLoginClick: () => void;
+    limitations: Limitations;
+    information: CoverLetterInformation;
+    setInformation: React.Dispatch<
+        React.SetStateAction<CoverLetterInformation>
+    >;
+}
+
 const GenerateCoverLetter = ({
     onLoginClick,
-}: {
-    onLoginClick: () => void;
-}) => {
+    limitations,
+    information,
+    setInformation,
+}: GenerateCoverLetterProps) => {
     const [data, setData] = useState<StoredFormData>(InitialData);
     const [isGenerating, setIsGenerating] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const { isSignedIn } = useAuth();
-    const [coverLetter, setCoverLetter] = useState<string | null>(null);
+    const [localLimitations, setLocalLimitations] =
+        useState<Limitations>(limitations);
+    const { isOpen: isSignInOpen } = useSignInModal();
 
     const setCvFile = useCallback((file: File | null) => {
         //conveert file to base64 and store in data state
@@ -143,14 +155,26 @@ const GenerateCoverLetter = ({
                 const errorData = await response.json().catch(() => ({}));
                 throw new Error(
                     errorData.message ||
-                        `Server error: ${response.status} ${response.statusText}`
+                        `Server error: ${response.status} ${response.statusText}`,
                 );
             }
 
             const result = await response.json();
-            console.log("Cover letter generation successful:", result);
-            setCoverLetter(result);
-            // TODO: Handle the generated cover letter (redirect, show modal, etc.)
+            const generatedCoverLetter = result?.data.coverLetter;
+            const forCompany = result?.data.companyName;
+            setLocalLimitations(
+                result?.data.limitations?.exist
+                    ? result.data.limitations
+                    : { exist: false, amount: 0 },
+            );
+            // Open drawer when cover letter is generated
+            if (generatedCoverLetter) {
+                setInformation({
+                    isDrawerOpen: true,
+                    coverLetter: generatedCoverLetter,
+                    companyName: forCompany,
+                });
+            }
         } catch (err) {
             const errorMessage =
                 err instanceof Error
@@ -160,10 +184,14 @@ const GenerateCoverLetter = ({
             console.error("Error generating cover letter:", err);
         } finally {
             setIsGenerating(false);
+            sessionStorage.removeItem(SESSION_STORAGE_KEY);
         }
     }, []);
 
     useEffect(() => {
+        if (isSignInOpen) {
+            return;
+        }
         const stored = getFromSessionStorage(); // now runs only on client
         setData(stored);
         if (isToGenerate(stored) && isSignedIn) {
@@ -266,6 +294,27 @@ const GenerateCoverLetter = ({
                     variant="solid"
                 />
             </div>
+            {Boolean(localLimitations?.exist) && (
+                <>
+                    {localLimitations?.amount <= 0 ? (
+                        <div className="px-4 py-3 bg-error/10 border border-error/20 rounded-lg">
+                            <p className="text-sm text-error font-body">
+                                You have reached your limit of{" "}
+                                {localLimitations.amount} generations. Please
+                                upgrade to a paid plan to continue generating
+                                cover letters.
+                            </p>
+                        </div>
+                    ) : localLimitations.amount === 1 ? (
+                        <div className="px-4 py-3 bg-warning/10 border border-warning/20 rounded-lg">
+                            <p className="text-sm text-warning font-body">
+                                You have {localLimitations.amount} generations
+                                left.
+                            </p>
+                        </div>
+                    ) : null}
+                </>
+            )}
 
             <div className="space-y-4">
                 <div>
@@ -405,7 +454,12 @@ const GenerateCoverLetter = ({
 
                 <button
                     onClick={handleGenerate}
-                    disabled={!isDataProvided(data) || isGenerating}
+                    disabled={
+                        (localLimitations.exist &&
+                            localLimitations.amount <= 0) ||
+                        !isDataProvided(data) ||
+                        isGenerating
+                    }
                     className="w-full px-6 py-4 bg-primary text-primary-foreground rounded-lg font-semibold hover:shadow-lg hover:scale-105 transition-all duration-200 font-cta flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                 >
                     {isGenerating ? (
@@ -424,6 +478,26 @@ const GenerateCoverLetter = ({
                         </>
                     )}
                 </button>
+
+                {information.coverLetter && (
+                    <button
+                        type="button"
+                        onClick={() =>
+                            setInformation((prev) => ({
+                                ...prev,
+                                isDrawerOpen: true,
+                            }))
+                        }
+                        className="w-full px-6 py-3 border-2 border-primary text-primary rounded-lg font-semibold hover:bg-primary/10 transition-all duration-200 font-cta flex items-center justify-center space-x-2"
+                    >
+                        <Icon
+                            name="DocumentTextIcon"
+                            size={20}
+                            variant="solid"
+                        />
+                        <span>View cover letter</span>
+                    </button>
+                )}
             </div>
 
             <div className="flex items-center justify-center space-x-2 pt-2">

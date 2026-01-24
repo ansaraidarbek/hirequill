@@ -315,6 +315,12 @@ Format:
 - End with a confident call to action
 - Sign with candidate name
 
+Length constraint (STRICT):
+- Maximum 450 words total
+- Preferred range: 350–420 words
+- If the draft exceeds this limit, aggressively compress while preserving domain ownership and metrics
+- Do NOT add extra paragraphs to compensate
+
 Final check:
 "If features were removed, would ownership and seniority still be obvious?"
 If not, rewrite.

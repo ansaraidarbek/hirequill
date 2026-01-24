@@ -1,9 +1,11 @@
 import { getSubscriptionByUserId } from "@/db/subscriptions/subscriptions";
 import { auth } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
-import { CoverLetterRequest, CoverLetterRequestSchema } from "@/features/utils/helpers";
+import {
+    CoverLetterRequest,
+    CoverLetterRequestSchema,
+} from "@/features/utils/helpers";
 import { generateCoverLetterForFreeTierUser } from "@/db/interactions";
-
 
 export async function POST(req: NextRequest) {
     try {
@@ -50,13 +52,16 @@ export async function POST(req: NextRequest) {
             // CreateCv({ userId, subscription, data: validatedData });
             console.log("User subscription verified:", subscription);
         } else {
-            const {coverLetter, message} = await generateCoverLetterForFreeTierUser(userId, validatedData);
+            const { coverLetter, message, limitations } =
+                await generateCoverLetterForFreeTierUser(userId, validatedData);
 
             return NextResponse.json(
                 {
                     message: message,
                     data: {
                         coverLetter,
+                        limitations,
+                        companyName: validatedData.companyName,
                     },
                 },
                 { status: 200 },

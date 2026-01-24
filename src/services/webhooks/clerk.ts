@@ -4,11 +4,8 @@ import {
 } from "@/db/subscriptions/subscriptions";
 import { deleteUser, insertUser, updateUser } from "@/db/users/user";
 import { getDay } from "@/utils/getDay";
+import { getMonthStartUTC } from "@/utils/getMonthStart";
 import type { UserJSON, WebhookEvent } from "@clerk/nextjs/server";
-
-function getMonthStartUTC(date = new Date()) {
-    return date.toISOString().slice(0, 10);
-}
 
 export const clerkUserCreate = async ({ event }: { event: WebhookEvent }) => {
     const userData = event.data as UserJSON;

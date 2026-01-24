@@ -3,13 +3,27 @@
 import Icon from "@/components/ui/AppIcon";
 import { SignedOut } from "@clerk/nextjs";
 import GenerateCoverLetter from "@/features/generate-cover-letter";
+import { Limitations } from "@/db/types/limitationType";
+import { CoverLetterInformation } from "@/components/utils/prepareInformation";
 
 interface HeroSectionProps {
     onLoginClick: () => void;
+    limitations: Limitations;
+    totalGenerations: number;
+    information: CoverLetterInformation;
+    setInformation: React.Dispatch<
+        React.SetStateAction<CoverLetterInformation>
+    >;
 }
 
-const HeroSection = ({ onLoginClick }: HeroSectionProps) => {
-
+const HeroSection = ({
+    onLoginClick,
+    limitations,
+    totalGenerations,
+    information,
+    setInformation,
+}: HeroSectionProps) => {
+    const finalGenerations = Number(totalGenerations) + 147832;
     return (
         <section
             className="relative bg-gradient-to-br from-primary/5 via-background to-secondary/5 overflow-hidden"
@@ -76,13 +90,12 @@ const HeroSection = ({ onLoginClick }: HeroSectionProps) => {
                             </button>
                         </div>
 
-                       
                         <div className="flex items-center space-x-6 pt-4">
                             <div className="flex items-center space-x-2">
                                 <div className="w-2 h-2 bg-accent rounded-full animate-pulse"></div>
                                 <span className="text-sm text-muted-foreground font-body">
                                     <span className="font-semibold text-foreground">
-                                        147832
+                                        {finalGenerations.toLocaleString()}
                                     </span>{" "}
                                     letters generated
                                 </span>
@@ -105,7 +118,12 @@ const HeroSection = ({ onLoginClick }: HeroSectionProps) => {
                     </div>
 
                     <div className="lg:pl-8">
-                        <GenerateCoverLetter onLoginClick={onLoginClick} />
+                        <GenerateCoverLetter
+                            onLoginClick={onLoginClick}
+                            limitations={limitations}
+                            information={information}
+                            setInformation={setInformation}
+                        />
                     </div>
                 </div>
             </div>

@@ -5,20 +5,30 @@ import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
 import MainLandingInteractive from "@/app/components/MainLandingInteractive";
 import SignIn from "@/components/common/SignIn";
+import { useSignInModal } from "@/hooks/useSignIn";
+import { PreparedData } from "@/components/utils/prepareInformation";
 
-export default function PageClient() {
-    const [isSignInOpen, setIsSignInOpen] = useState(false);
-
-    const handleLoginClick = () => {
-        setIsSignInOpen(true);
-    };
+export default function PageClient({
+    initialData,
+}: {
+    initialData: PreparedData;
+}) {
+    const {
+        isOpen: isSignInOpen,
+        open: openSignIn,
+        close: closeSignIn,
+    } = useSignInModal();
 
     return (
-        <>
-            <Header onLoginClick={handleLoginClick} />
-            <MainLandingInteractive onLoginClick={handleLoginClick} />
+        <div style={{ overflowX: "hidden", overflowY: "auto" }}>
+            <Header onLoginClick={openSignIn} />
+            <MainLandingInteractive
+                onLoginClick={openSignIn}
+                totalGenerations={initialData.totalGenerations}
+                limitations={initialData.limitations}
+            />
             <Footer />
-            <SignIn isOpen={isSignInOpen} onClose={() => setIsSignInOpen(false)} />
-        </>
+            <SignIn isOpen={isSignInOpen} onClose={closeSignIn} />
+        </div>
     );
 }

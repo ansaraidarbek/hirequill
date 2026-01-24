@@ -20,7 +20,8 @@ export const CoverLetterRequestSchema = z.object({
     companyName: z.string().min(1, "Company name is required"),
     positionTitle: z.string().min(1, "Position title is required"),
     jobDescription: z.string().optional(),
-    cvFileData: z.object({
+    cvFileData: z.object({ 
+        id: z.string().min(1, "CV file ID is required").optional(),
         base64: z.string().min(1, "CV file data is required"),
         fileName: z.string().min(1, "File name is required"),
         fileType: z.enum(allowedTypes, "File type is required"),

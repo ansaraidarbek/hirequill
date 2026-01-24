@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { SignIn as ClerkSignIn, SignedOut } from "@clerk/nextjs";
+import { SignIn as ClerkSignIn, SignedOut, useUser } from "@clerk/nextjs";
 import Icon from "@/components/ui/AppIcon";
 
 interface SignInProps {
@@ -10,16 +10,25 @@ interface SignInProps {
 }
 
 const SignIn = ({ isOpen, onClose }: SignInProps) => {
+    const { isSignedIn } = useUser();
+
+    // 🔥 Close modal immediately after successful sign-in
+    useEffect(() => {
+        if (isSignedIn && isOpen) {
+            onClose();
+        }
+    }, [isSignedIn, isOpen, onClose]);
+
     // Prevent body scroll when modal is open
     useEffect(() => {
         if (isOpen) {
             document.body.style.overflow = "hidden";
         } else {
-            document.body.style.overflow = "unset";
+            document.body.style.overflow = "auto";
         }
 
         return () => {
-            document.body.style.overflow = "unset";
+            document.body.style.overflow = "auto";
         };
     }, [isOpen]);
 
@@ -77,6 +86,7 @@ const SignIn = ({ isOpen, onClose }: SignInProps) => {
                         <div className="bg-card rounded-lg shadow-2xl p-6">
                             <ClerkSignIn
                                 routing="hash"
+                                forceRedirectUrl="/?signin=1"
                                 appearance={{
                                     elements: {
                                         rootBox: "mx-auto",

@@ -10,6 +10,7 @@ export const CVSTable = pgTable("cvs", {
         .references(() => UserTable.id, { onDelete: "cascade" }),
     storagePath: text(),
     filename: varchar({ length: 255 }).notNull(),
+    fileType: varchar({ length: 255 }).notNull(),
     createdAt: createdAt,
     plainText: text().notNull(),
 });

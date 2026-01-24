@@ -1,36 +1,44 @@
-import React from 'react';
-import type { Metadata, Viewport } from 'next';
-import '../styles/index.css';
-import { ClerkProvider } from '@/services/clerk/components/ClerkProvider';
+import React from "react";
+import type { Metadata, Viewport } from "next";
+import "../styles/index.css";
+import { ClerkProvider } from "@/services/clerk/components/ClerkProvider";
 
 export const viewport: Viewport = {
-  width: 'device-width',
-  initialScale: 1,
+    width: "device-width",
+    initialScale: 1,
 };
 
 export const metadata: Metadata = {
-  title: 'Next.js with Tailwind CSS',
-  description: 'A boilerplate project with Next.js and Tailwind CSS',
-  icons: {
-    icon: [
-      { url: '/favicon.ico', type: 'image/x-icon' }
-    ],
-  },
+    title: "Next.js with Tailwind CSS",
+    description: "A boilerplate project with Next.js and Tailwind CSS",
+    icons: {
+        icon: [{ url: "/favicon.ico", type: "image/x-icon" }],
+    },
 };
 
 export default function RootLayout({
-  children,
+    children,
 }: Readonly<{
-  children: React.ReactNode;
+    children: React.ReactNode;
 }>) {
-  return (
-    <ClerkProvider>
-      <html lang="en">
-        <body>{children}
+    return (
+        <ClerkProvider>
+            <html lang="en">
+                <body>
+                    {children}
 
-          <script type="module" async src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Fhirequill2264back.builtwithrocket.new&_be=https%3A%2F%2Fapplication.rocket.new&_v=0.1.12" />
-          <script type="module" defer src="https://static.rocket.new/rocket-shot.js?v=0.0.2" /></body>
-      </html>
-    </ClerkProvider>
-  );
+                    <script
+                        type="module"
+                        async
+                        src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Fhirequill2264back.builtwithrocket.new&_be=https%3A%2F%2Fapplication.rocket.new&_v=0.1.12"
+                    />
+                    <script
+                        type="module"
+                        defer
+                        src="https://static.rocket.new/rocket-shot.js?v=0.0.2"
+                    />
+                </body>
+            </html>
+        </ClerkProvider>
+    );
 }
