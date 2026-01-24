@@ -1,39 +1,27 @@
-import { pgTable, text, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
-import { supabaseAdmin } from "../client";
+import { db } from "@/drizzle/db";
+import { CVSTable } from "@/drizzle/schema/cvs";
 import { revalidateCVCache } from "../cache/cv";
-
-export const CVSTable = pgTable("cvs", {
-    id: uuid("id").defaultRandom().primaryKey(),
-    userId: varchar("user_id", { length: 255 }).notNull(),
-    storagePath: text("storage_path").notNull(),
-    filename: varchar("filename", { length: 255 }).notNull(),
-    createdAt: timestamp("created_at", { withTimezone: true })
-        .defaultNow()
-        .notNull(),
-});
+import { eq } from "drizzle-orm";
 
 export async function insertCV(cv: typeof CVSTable.$inferInsert) {
-    const { error } = await supabaseAdmin
-        .from("cvs")
-        .upsert(cv, { onConflict: "id" });
+    // Upsert by unique userId (requires unique constraint/index on cvs.user_id)
+    await db.insert(CVSTable).values(cv).onConflictDoUpdate({
+        target: CVSTable.userId,
+        set: cv,
+    });
 
-    if (error) throw error;
-    if (cv.id) {
-        revalidateCVCache(cv.id);
-    }
+    revalidateCVCache(cv.userId);
 }
 
 export async function updateCV(
-    id: string,
+    userId: string,
     cv: Partial<typeof CVSTable.$inferInsert>,
 ) {
-    const { error } = await supabaseAdmin.from("cvs").update(cv).eq("id", id);
-    if (error) throw error;
-    revalidateCVCache(id);
+    await db.update(CVSTable).set(cv).where(eq(CVSTable.userId, userId));
+    revalidateCVCache(userId);
 }
 
-export async function deleteCV(id: string) {
-    const { error } = await supabaseAdmin.from("cvs").delete().eq("id", id);
-    if (error) throw error;
-    revalidateCVCache(id);
+export async function deleteCV(userId: string) {
+    await db.delete(CVSTable).where(eq(CVSTable.userId, userId));
+    revalidateCVCache(userId);
 }

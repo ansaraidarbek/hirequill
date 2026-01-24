@@ -1,23 +1,38 @@
-import { dayStartedEnum, deleteSubscription, insertSubscription } from "@/db/subscriptions/subscriptions";
+import {
+    deleteSubscription,
+    insertSubscription,
+} from "@/db/subscriptions/subscriptions";
 import { deleteUser, insertUser, updateUser } from "@/db/users/user";
 import { getDay } from "@/utils/getDay";
 import type { UserJSON, WebhookEvent } from "@clerk/nextjs/server";
 
+function getMonthStartUTC(date = new Date()) {
+    return date.toISOString().slice(0, 10);
+}
+
 export const clerkUserCreate = async ({ event }: { event: WebhookEvent }) => {
     const userData = event.data as UserJSON;
     const email = userData.email_addresses.find(
-        (email) => email.id === userData.primary_email_address_id
+        (email) => email.id === userData.primary_email_address_id,
     );
     console.log("User created webhook received for user ID:", userData.id);
     if (email == null) {
         throw new Error("No primary email found");
     }
 
+    const now = new Date();
+    const monthStart = getMonthStartUTC(now);
+
     await insertUser({
         id: userData.id,
-        name: `${userData.first_name} ${userData.last_name}`,
+        name: `${userData.first_name ?? ""} ${userData.last_name ?? ""}`.trim(),
         imageUrl: userData.image_url,
         email: email.email_address,
+
+        totalGenerationsAllTime: 0,
+        totalFreeGenerationsThisMonth: 0,
+        freeGenerationsMonth: monthStart,
+
         createdAt: new Date(userData.created_at),
         updatedAt: new Date(userData.updated_at),
     });
@@ -36,7 +51,7 @@ export const clerkUserCreate = async ({ event }: { event: WebhookEvent }) => {
 export const clerkUserUpdate = async ({ event }: { event: WebhookEvent }) => {
     const userData = event.data as UserJSON;
     const email = userData.email_addresses.find(
-        (email) => email.id === userData.primary_email_address_id
+        (email) => email.id === userData.primary_email_address_id,
     );
 
     if (email == null) {
