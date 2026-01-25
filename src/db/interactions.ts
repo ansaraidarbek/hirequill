@@ -1,9 +1,7 @@
 // generateCoverLetterForFreeTierUser
 // generateCoverLetterForMonthlyTierUser
 // generateCoverLetterForLifetimeTierUser
-import {
-    generateCoverLetterFromData,
-} from "@/features/utils/generate-cover-letter";
+import { generateCoverLetterFromData } from "@/features/utils/generate-cover-letter";
 import { CoverLetterRequest } from "@/features/utils/helpers";
 import { MESSAGE_TYPE } from "./types/messageType";
 import {
@@ -11,6 +9,8 @@ import {
     refundFreeGeneration,
     consumePaidGeneration,
     refundPaidGeneration,
+    consumeForeverGeneration,
+    refundForeverGeneration,
 } from "./atomicFunctions";
 import { UserTable } from "@/drizzle/schema/user";
 import { sql } from "drizzle-orm/sql/sql";
@@ -57,7 +57,7 @@ export async function generateCoverLetterForFreeTierUser(
         return {
             coverLetter,
             message: "Cover letter generated successfully",
-            limitations: { exist: true, amount: data?.left ?? 0},
+            limitations: { exist: true, amount: data?.left ?? 0 },
         };
     } catch (error) {
         console.error("generateCoverLetterForFreeTierUser error:", error);
@@ -69,6 +69,134 @@ export async function generateCoverLetterForFreeTierUser(
             } catch (refundError) {
                 console.error("refundGeneration error:", refundError);
                 // we still return the original error to user; refund failure is internal
+            }
+        }
+
+        return {
+            coverLetter: "",
+            message: "Error generating cover letter",
+            limitations: null,
+        };
+    }
+}
+
+export async function generateCoverLetterForPaidUser(
+    userId: string,
+    validatedData: CoverLetterRequest,
+): Promise<MESSAGE_TYPE> {
+    let consumed = false;
+    let companyKey = validatedData.companyName;
+
+    try {
+        if (!validatedData.cvFileData?.id) {
+            console.log("Inserting user CV into database");
+            await insertUserCSV(userId, validatedData);
+        }
+
+        const weeklyCompanies = await getThisWeeksUserCompanies(userId);
+        console.log("Weekly companies used:", weeklyCompanies);
+
+        const resolved = await resolveCompanyKey({
+            currentCompanyName: companyKey,
+            weeklyCompanyKeys: weeklyCompanies,
+            client: getOpenAIClient(),
+            model: "gpt-5-nano",
+        });
+        companyKey = resolved.companyKey;
+        console.log("Resolved company key:", companyKey);
+
+        const { consumed: didConsume } = await consumePaidGeneration(
+            userId,
+            companyKey,
+        );
+        consumed = didConsume;
+
+        if (!consumed) {
+            return {
+                coverLetter: "",
+                message: "Unable to record usage",
+                limitations: null,
+            };
+        }
+        console.log(
+            "Generating cover letter with resolved company key:",
+            companyKey,
+        );
+        const coverLetter = await generateCoverLetterFromData({
+            ...validatedData,
+            companyName: companyKey,
+        });
+
+        return {
+            coverLetter,
+            message: "Cover letter generated successfully",
+            limitations: { exist: false, amount: 0 },
+        };
+    } catch (error) {
+        console.error("generateCoverLetterForPaidUser error:", error);
+
+        if (consumed) {
+            try {
+                await refundPaidGeneration(userId, companyKey);
+            } catch (refundError) {
+                console.error("refundPaidGeneration error:", refundError);
+            }
+        }
+
+        return {
+            coverLetter: "",
+            message: "Error generating cover letter",
+            limitations: null,
+        };
+    }
+}
+
+export async function generateCoverLetterForForeverUser(
+    userId: string,
+    validatedData: CoverLetterRequest,
+): Promise<MESSAGE_TYPE> {
+    let consumed = false;
+    let companyKey = validatedData.companyName;
+
+    try {
+        if (!validatedData.cvFileData?.id) {
+            await insertUserCSV(userId, validatedData);
+        }
+
+        const { consumed: didConsume } = await consumeForeverGeneration(
+            userId,
+        );
+        consumed = didConsume;
+
+        if (!consumed) {
+            return {
+                coverLetter: "",
+                message: "Unable to record usage",
+                limitations: null,
+            };
+        }
+        console.log(
+            "Generating cover letter with resolved company key:",
+            companyKey,
+        );
+        const coverLetter = await generateCoverLetterFromData({
+            ...validatedData,
+            companyName: companyKey,
+        });
+
+        return {
+            coverLetter,
+            message: "Cover letter generated successfully",
+            limitations: { exist: false, amount: 0 },
+        };
+    } catch (error) {
+        console.error("generateCoverLetterForForeverUser error:", error);
+
+        if (consumed) {
+            try {
+                await refundForeverGeneration(userId);
+            } catch (refundError) {
+                console.error("refundForeverGeneration error:", refundError);
             }
         }
 
@@ -108,72 +236,6 @@ export async function insertUserCSV(
         fileType: fileType,
         storagePath: null,
     });
-}
-
-export async function generateCoverLetterForPaidUser(
-    userId: string,
-    validatedData: CoverLetterRequest,
-    _isAnalytic?: boolean,
-): Promise<MESSAGE_TYPE> {
-    let consumed = false;
-    let companyKey = validatedData.companyName;
-
-    try {
-        if (!validatedData.cvFileData?.id) {
-            console.log("Inserting user CV into database");
-            await insertUserCSV(userId, validatedData);
-        }
-
-        const weeklyCompanies = await getThisWeeksUserCompanies(userId);
-        console.log("Weekly companies used:", weeklyCompanies);
-
-        const resolved = await resolveCompanyKey({
-            currentCompanyName: companyKey,
-            weeklyCompanyKeys: weeklyCompanies,
-            client: getOpenAIClient(),
-            model: "gpt-5-nano",
-        });
-        companyKey = resolved.companyKey;
-        console.log("Resolved company key:", companyKey);
-
-        const { consumed: didConsume } = await consumePaidGeneration(userId, companyKey);
-        consumed = didConsume;
-
-        if (!consumed) {
-            return {
-              coverLetter: "",
-              message: "Unable to record usage",
-              limitations: null,
-            };
-          }
-        console.log("Generating cover letter with resolved company key:", companyKey);
-        const coverLetter = await generateCoverLetterFromData({
-            ...validatedData,
-            companyName: companyKey,
-        });
-
-        return {
-            coverLetter,
-            message: "Cover letter generated successfully",
-            limitations: { exist: false, amount: 0 },
-        };
-    } catch (error) {
-        console.error("generateCoverLetterForPaidUser error:", error);
-
-        if (consumed) {
-            try {
-                await refundPaidGeneration(userId, companyKey);
-            } catch (refundError) {
-                console.error("refundPaidGeneration error:", refundError);
-            }
-        }
-
-        return {
-            coverLetter: "",
-            message: "Error generating cover letter",
-            limitations: null,
-        };
-    }
 }
 
 export async function getTotalUsersGenerationsCount(): Promise<number> {
@@ -240,7 +302,9 @@ export async function getUserLimitations(userId: string): Promise<Limitations> {
     }
 }
 
-export async function getCurrentCvInformation(userId: string): Promise<CVType | null> {
+export async function getCurrentCvInformation(
+    userId: string,
+): Promise<CVType | null> {
     const cv = await getCVByUserId(userId);
     if (!cv) {
         return null;

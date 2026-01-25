@@ -104,17 +104,10 @@ const GenerateCoverLetter = ({
     setInformation,
     cvInformation,
 }: GenerateCoverLetterProps) => {
-    console.log("cvInformation in HeroSection:", cvInformation);
     const [data, setData] = useState<StoredFormData>({
         ...InitialData,
         cvFileData: cvInformation || undefined,
     });
-    const [anotherData, setAnotherData] = useState<StoredFormData>({
-        ...InitialData,
-        cvFileData: cvInformation || undefined,
-    });
-    console.log("GenerateCoverLetter data state:", data);
-    console.log("GenerateCoverLetter data state:", anotherData);
     const [isGenerating, setIsGenerating] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const { isSignedIn } = useAuth();

@@ -180,3 +180,45 @@ export async function refundPaidGeneration(
 
     return { refunded };
 }
+
+export async function consumeForeverGeneration(
+    userId: string,
+): Promise<{ consumed: boolean }> {
+    const result = await db
+        .update(UserTable)
+        .set({
+            totalGenerationsAllTime: sql`${UserTable.totalGenerationsAllTime} + 1`,
+        })
+        .where(eq(UserTable.id, userId))
+        .returning({ id: UserTable.id });
+
+    const consumed = Boolean(result[0]);
+
+    if (consumed) {
+        revalidateUserCache(userId);
+    }
+
+    return {
+        consumed,
+    };
+}
+
+export async function refundForeverGeneration(
+    userId: string,
+): Promise<{ refunded: boolean }> {
+    const result = await db
+        .update(UserTable)
+        .set({
+            totalGenerationsAllTime: sql`GREATEST(${UserTable.totalGenerationsAllTime} - 1, 0)`,
+        })
+        .where(eq(UserTable.id, userId))
+        .returning({ id: UserTable.id });
+
+    const refunded = Boolean(result[0]);
+
+    if (refunded) {
+        revalidateUserCache(userId);
+    }
+
+    return { refunded };
+}

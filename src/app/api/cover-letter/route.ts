@@ -6,6 +6,7 @@ import {
     CoverLetterRequestSchema,
 } from "@/features/utils/helpers";
 import {
+    generateCoverLetterForForeverUser,
     generateCoverLetterForFreeTierUser,
     generateCoverLetterForPaidUser,
 } from "@/db/interactions";
@@ -44,55 +45,57 @@ export async function POST(req: NextRequest) {
 
         const validatedData: CoverLetterRequest = validationResult.data;
 
+        let message = "no plan found";
+        let coverLetter = null;
+        let limitations = null;
         // check from the database whether current user has subscription
         // if save his CV to database
         const subscription = await getSubscriptionByUserId(userId);
-        if (
-            subscription &&
-            (subscription?.plan === "monthly" ||
-                subscription?.plan === "forever")
-        ) {
-            // CreateCv({ userId, subscription, data: validatedData });
-            if (subscription?.plan === "monthly") {
-                const { coverLetter, message, limitations } =
-                    await generateCoverLetterForPaidUser(userId, validatedData);
-
-                return NextResponse.json(
+        if (subscription) {
+            switch (subscription.plan) {
+                case "monthly":
                     {
-                        message: message,
-                        data: {
-                            coverLetter,
-                            limitations,
-                            companyName: validatedData.companyName,
-                        },
-                    },
-                    { status: 200 },
-                );
+                        const result = await generateCoverLetterForPaidUser(
+                            userId,
+                            validatedData,
+                        );
+                        coverLetter = result.coverLetter;
+                        message = result.message;
+                        limitations = result.limitations;
+                    }
+                    break;
+                case "forever":
+                    {
+                        const result = await generateCoverLetterForForeverUser(
+                            userId,
+                            validatedData,
+                        );
+                        coverLetter = result.coverLetter;
+                        message = result.message;
+                        limitations = result.limitations;
+                    }
+                    break;
+                default:
+                    {
+                        const result = await generateCoverLetterForFreeTierUser(
+                            userId,
+                            validatedData,
+                        );
+                        coverLetter = result.coverLetter;
+                        message = result.message;
+                        limitations = result.limitations;
+                    }
+                    break;
             }
-        } else {
-            const { coverLetter, message, limitations } =
-                await generateCoverLetterForFreeTierUser(userId, validatedData);
-
-            return NextResponse.json(
-                {
-                    message: message,
-                    data: {
-                        coverLetter,
-                        limitations,
-                        companyName: validatedData.companyName,
-                    },
-                },
-                { status: 200 },
-            );
         }
 
         return NextResponse.json(
             {
-                message: "Cover letter generated successfully",
+                message: message,
                 data: {
-                    data: null,
-                    message:
-                        "Looks like no plan for you to generate cover letters :)",
+                    coverLetter,
+                    limitations,
+                    companyName: validatedData.companyName,
                 },
             },
             { status: 200 },
