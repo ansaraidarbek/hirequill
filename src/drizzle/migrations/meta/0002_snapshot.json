@@ -1,6 +1,6 @@
 {
-  "id": "a3b33f6a-fb59-4780-9dab-5d0a59f196c8",
-  "prevId": "d0b415dd-a296-4bff-9fe4-b1a2bef664f3",
+  "id": "c09f7be0-1da5-4c62-8d0f-d144d803f717",
+  "prevId": "a3b33f6a-fb59-4780-9dab-5d0a59f196c8",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -63,7 +63,8 @@
           "name": "freeGenerationsMonth",
           "type": "date",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "default": "date_trunc('month', now())::date"
         }
       },
       "indexes": {},
@@ -107,6 +108,12 @@
         },
         "filename": {
           "name": "filename",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "fileType": {
+          "name": "fileType",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
