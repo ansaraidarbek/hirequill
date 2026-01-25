@@ -20,12 +20,13 @@ import { getUser } from "./users/user";
 import { getMonthStartUTC } from "@/utils/getMonthStart";
 import { Limitations } from "./types/limitationType";
 import { FREE_TIER_LIMIT } from "./constants";
-import { insertCV } from "./cvs/cvs";
+import { getCVByUserId, insertCV } from "./cvs/cvs";
 import { resolveCompanyKey } from "@/features/utils/resolve-company-names";
 import { UserCompanyUsageWeekTable } from "@/drizzle/schema/usagesWeekly";
 import { and, eq } from "drizzle-orm";
 import { getWeekStartUTC } from "@/utils/getWeekStart";
 import { getOpenAIClient } from "@/lib/openai-client";
+import { CVType } from "./types/cvType";
 
 export async function generateCoverLetterForFreeTierUser(
     userId: string,
@@ -119,10 +120,12 @@ export async function generateCoverLetterForPaidUser(
 
     try {
         if (!validatedData.cvFileData?.id) {
+            console.log("Inserting user CV into database");
             await insertUserCSV(userId, validatedData);
         }
 
         const weeklyCompanies = await getThisWeeksUserCompanies(userId);
+        console.log("Weekly companies used:", weeklyCompanies);
 
         const resolved = await resolveCompanyKey({
             currentCompanyName: companyKey,
@@ -131,6 +134,7 @@ export async function generateCoverLetterForPaidUser(
             model: "gpt-5-nano",
         });
         companyKey = resolved.companyKey;
+        console.log("Resolved company key:", companyKey);
 
         const { consumed: didConsume } = await consumePaidGeneration(userId, companyKey);
         consumed = didConsume;
@@ -142,7 +146,7 @@ export async function generateCoverLetterForPaidUser(
               limitations: null,
             };
           }
-
+        console.log("Generating cover letter with resolved company key:", companyKey);
         const coverLetter = await generateCoverLetterFromData({
             ...validatedData,
             companyName: companyKey,
@@ -234,4 +238,17 @@ export async function getUserLimitations(userId: string): Promise<Limitations> {
             amount: 0,
         };
     }
+}
+
+export async function getCurrentCvInformation(userId: string): Promise<CVType | null> {
+    const cv = await getCVByUserId(userId);
+    if (!cv) {
+        return null;
+    }
+    return {
+        id: cv.id,
+        base64: cv.plainText,
+        fileName: cv.filename,
+        fileType: cv.fileType,
+    };
 }

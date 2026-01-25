@@ -26,6 +26,7 @@ export default function PageClient({
                 onLoginClick={openSignIn}
                 totalGenerations={initialData.totalGenerations}
                 limitations={initialData.limitations}
+                cvInformation={initialData.cvInformation}
             />
             <Footer />
             <SignIn isOpen={isSignInOpen} onClose={closeSignIn} />

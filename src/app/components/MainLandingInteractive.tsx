@@ -10,17 +10,20 @@ import { Limitations } from "@/db/types/limitationType";
 import { useState } from "react";
 import CoverLetterDrawer from "@/features/generate-cover-letter/components/__CoverLetterDrawer";
 import { CoverLetterInformation } from "@/components/utils/prepareInformation";
+import { CVType } from "@/db/types/cvType";
 
 interface MainLandingInteractiveProps {
     onLoginClick: () => void;
     limitations: Limitations;
     totalGenerations: number;
+    cvInformation: CVType | null;
 }
 
 const MainLandingInteractive = ({
     onLoginClick,
     limitations,
     totalGenerations,
+    cvInformation,
 }: MainLandingInteractiveProps) => {
     const [information, setInformation] = useState<CoverLetterInformation>({
         isDrawerOpen: false,
@@ -35,6 +38,7 @@ const MainLandingInteractive = ({
                 totalGenerations={totalGenerations}
                 information={information}
                 setInformation={setInformation}
+                cvInformation={cvInformation}
             />
             <HowItWorksSection />
             <PricingSection />

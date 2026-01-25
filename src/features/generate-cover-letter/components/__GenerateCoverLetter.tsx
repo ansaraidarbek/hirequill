@@ -6,17 +6,14 @@ import { useAuth } from "@clerk/nextjs";
 import { Limitations } from "@/db/types/limitationType";
 import { useSignInModal } from "@/hooks/useSignIn";
 import { CoverLetterInformation } from "@/components/utils/prepareInformation";
+import { CVType } from "@/db/types/cvType";
 const SESSION_STORAGE_KEY = "coverLetterFormData";
 
 interface StoredFormData {
     companyName: string;
     positionTitle: string;
     jobDescription: string;
-    cvFileData?: {
-        base64: string;
-        fileName: string;
-        fileType: string;
-    };
+    cvFileData?: CVType;
     shouldGenerate: boolean;
 }
 
@@ -97,6 +94,7 @@ interface GenerateCoverLetterProps {
     setInformation: React.Dispatch<
         React.SetStateAction<CoverLetterInformation>
     >;
+    cvInformation: CVType | null;
 }
 
 const GenerateCoverLetter = ({
@@ -104,8 +102,19 @@ const GenerateCoverLetter = ({
     limitations,
     information,
     setInformation,
+    cvInformation,
 }: GenerateCoverLetterProps) => {
-    const [data, setData] = useState<StoredFormData>(InitialData);
+    console.log("cvInformation in HeroSection:", cvInformation);
+    const [data, setData] = useState<StoredFormData>({
+        ...InitialData,
+        cvFileData: cvInformation || undefined,
+    });
+    const [anotherData, setAnotherData] = useState<StoredFormData>({
+        ...InitialData,
+        cvFileData: cvInformation || undefined,
+    });
+    console.log("GenerateCoverLetter data state:", data);
+    console.log("GenerateCoverLetter data state:", anotherData);
     const [isGenerating, setIsGenerating] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const { isSignedIn } = useAuth();
@@ -193,9 +202,9 @@ const GenerateCoverLetter = ({
             return;
         }
         const stored = getFromSessionStorage(); // now runs only on client
-        setData(stored);
         if (isToGenerate(stored) && isSignedIn) {
             // Only auto-generate if user is signed in
+            setData(stored);
             performGeneration(stored);
         }
     }, [isSignedIn, performGeneration]);

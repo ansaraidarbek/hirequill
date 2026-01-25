@@ -5,6 +5,7 @@ import { SignedOut } from "@clerk/nextjs";
 import GenerateCoverLetter from "@/features/generate-cover-letter";
 import { Limitations } from "@/db/types/limitationType";
 import { CoverLetterInformation } from "@/components/utils/prepareInformation";
+import { CVType } from "@/db/types/cvType";
 
 interface HeroSectionProps {
     onLoginClick: () => void;
@@ -14,6 +15,7 @@ interface HeroSectionProps {
     setInformation: React.Dispatch<
         React.SetStateAction<CoverLetterInformation>
     >;
+    cvInformation: CVType | null;
 }
 
 const HeroSection = ({
@@ -22,6 +24,7 @@ const HeroSection = ({
     totalGenerations,
     information,
     setInformation,
+    cvInformation,
 }: HeroSectionProps) => {
     const finalGenerations = Number(totalGenerations) + 147832;
     return (
@@ -123,6 +126,7 @@ const HeroSection = ({
                             limitations={limitations}
                             information={information}
                             setInformation={setInformation}
+                            cvInformation={cvInformation}
                         />
                     </div>
                 </div>

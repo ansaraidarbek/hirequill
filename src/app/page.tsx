@@ -18,7 +18,7 @@ export default async function Home() {
         : {
               totalGenerations: 0,
               limitations: { exist: false, amount: 0 },
+              cvInformation: null,
           };
-
     return <PageClient initialData={initialData} />;
 }

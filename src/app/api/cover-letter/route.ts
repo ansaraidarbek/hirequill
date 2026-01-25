@@ -5,7 +5,10 @@ import {
     CoverLetterRequest,
     CoverLetterRequestSchema,
 } from "@/features/utils/helpers";
-import { generateCoverLetterForFreeTierUser } from "@/db/interactions";
+import {
+    generateCoverLetterForFreeTierUser,
+    generateCoverLetterForPaidUser,
+} from "@/db/interactions";
 
 export async function POST(req: NextRequest) {
     try {
@@ -50,7 +53,22 @@ export async function POST(req: NextRequest) {
                 subscription?.plan === "forever")
         ) {
             // CreateCv({ userId, subscription, data: validatedData });
-            console.log("User subscription verified:", subscription);
+            if (subscription?.plan === "monthly") {
+                const { coverLetter, message, limitations } =
+                    await generateCoverLetterForPaidUser(userId, validatedData);
+
+                return NextResponse.json(
+                    {
+                        message: message,
+                        data: {
+                            coverLetter,
+                            limitations,
+                            companyName: validatedData.companyName,
+                        },
+                    },
+                    { status: 200 },
+                );
+            }
         } else {
             const { coverLetter, message, limitations } =
                 await generateCoverLetterForFreeTierUser(userId, validatedData);
@@ -74,7 +92,7 @@ export async function POST(req: NextRequest) {
                 data: {
                     data: null,
                     message:
-                        "You need to unsubscribe to generate cover letters :)",
+                        "Looks like no plan for you to generate cover letters :)",
                 },
             },
             { status: 200 },

@@ -25,3 +25,14 @@ export async function deleteCV(userId: string) {
     await db.delete(CVSTable).where(eq(CVSTable.userId, userId));
     revalidateCVCache(userId);
 }
+
+export async function getCVByUserId(
+    userId: string,
+): Promise<typeof CVSTable.$inferSelect | null> {
+    const [cv] = await db
+        .select()
+        .from(CVSTable)
+        .where(eq(CVSTable.userId, userId));
+
+    return cv ?? null;
+}

@@ -19,7 +19,7 @@ export async function resolveCompanyKey(params: {
     for (const item of weeklyCompanyKeys) {
         if (item === normalizedCurrent) {
             return {
-                companyKey: item
+                companyKey: item,
             };
         }
     }
@@ -59,14 +59,19 @@ export async function resolveCompanyKey(params: {
         2,
     );
 
-    const res = await client.chat.completions.create({
+    const payload: any = {
         model,
-        temperature: 0,
         messages: [
             { role: "system", content: system },
             { role: "user", content: user },
         ],
-    });
+    };
+
+    if (!model.startsWith("gpt-5")) {
+        payload.temperature = 0;
+    }
+
+    const res = await client.chat.completions.create(payload);
 
     const raw = res.choices[0]?.message?.content?.trim();
     if (!raw) {
