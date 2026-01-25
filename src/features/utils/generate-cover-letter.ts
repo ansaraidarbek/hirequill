@@ -1,5 +1,5 @@
-import { env } from "@/data/env/server";
-import OpenAI from "openai";
+import { OpenAI } from "openai";
+import { getOpenAIClient } from "@/lib/openai-client";
 import pdfParse from "pdf-parse";
 import mammoth from "mammoth";
 import { CoverLetterRequest } from "./helpers";
@@ -208,9 +208,7 @@ async function researchCompany(
     companyName: string,
     positionTitle: string,
 ): Promise<string> {
-    const client = new OpenAI({
-        apiKey: env.OPENAI_API_KEY,
-    });
+    const client = getOpenAIClient();
 
     try {
         const researchPrompt = `Research the company "${companyName}" and provide a comprehensive analysis focusing on:
@@ -264,9 +262,7 @@ async function generateCoverLetter(params: {
 }): Promise<string> {
     const { cvText, companyName, positionTitle, jobDescription } = params;
 
-    const client = new OpenAI({
-        apiKey: env.OPENAI_API_KEY,
-    });
+    const client = getOpenAIClient();
 
     try {
         // Step 1: Research the company

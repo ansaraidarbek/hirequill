@@ -21,6 +21,11 @@ import { getMonthStartUTC } from "@/utils/getMonthStart";
 import { Limitations } from "./types/limitationType";
 import { FREE_TIER_LIMIT } from "./constants";
 import { insertCV } from "./cvs/cvs";
+import { resolveCompanyKey } from "@/features/utils/resolve-company-names";
+import { UserCompanyUsageWeekTable } from "@/drizzle/schema/usagesWeekly";
+import { and, eq } from "drizzle-orm";
+import { getWeekStartUTC } from "@/utils/getWeekStart";
+import { getOpenAIClient } from "@/lib/openai-client";
 
 export async function generateCoverLetterForFreeTierUser(
     userId: string,
@@ -74,6 +79,22 @@ export async function generateCoverLetterForFreeTierUser(
     }
 }
 
+export async function getThisWeeksUserCompanies(
+    userId: string,
+): Promise<string[]> {
+    const weekStart = getWeekStartUTC();
+    const rows = await db
+        .select({ companyKey: UserCompanyUsageWeekTable.companyKey })
+        .from(UserCompanyUsageWeekTable)
+        .where(
+            and(
+                eq(UserCompanyUsageWeekTable.userId, userId),
+                eq(UserCompanyUsageWeekTable.weekStart, weekStart),
+            ),
+        );
+    return rows.map((r) => r.companyKey);
+}
+
 export async function insertUserCSV(
     userId: string,
     validatedData: CoverLetterRequest,
@@ -94,17 +115,38 @@ export async function generateCoverLetterForPaidUser(
     _isAnalytic?: boolean,
 ): Promise<MESSAGE_TYPE> {
     let consumed = false;
-    const companyKey = validatedData.companyName;
+    let companyKey = validatedData.companyName;
 
     try {
         if (!validatedData.cvFileData?.id) {
             await insertUserCSV(userId, validatedData);
         }
 
-        const data = await consumePaidGeneration(userId, companyKey);
-        consumed = data.consumed;
+        const weeklyCompanies = await getThisWeeksUserCompanies(userId);
 
-        const coverLetter = await generateCoverLetterFromData(validatedData);
+        const resolved = await resolveCompanyKey({
+            currentCompanyName: companyKey,
+            weeklyCompanyKeys: weeklyCompanies,
+            client: getOpenAIClient(),
+            model: "gpt-5-nano",
+        });
+        companyKey = resolved.companyKey;
+
+        const { consumed: didConsume } = await consumePaidGeneration(userId, companyKey);
+        consumed = didConsume;
+
+        if (!consumed) {
+            return {
+              coverLetter: "",
+              message: "Unable to record usage",
+              limitations: null,
+            };
+          }
+
+        const coverLetter = await generateCoverLetterFromData({
+            ...validatedData,
+            companyName: companyKey,
+        });
 
         return {
             coverLetter,
