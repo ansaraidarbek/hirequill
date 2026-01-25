@@ -7,6 +7,9 @@ export const env = createEnv({
         CLERK_WEBHOOK_SIGNING_SECRET: z.string().min(1),
         DATABASE_URL: z.string().min(1),
         OPENAI_API_KEY: z.string().min(1),
+        LEMON_SQUEEZY_API_KEY: z.string().min(1),
+        LEMON_SQUEEZY_STORE_ID: z.string().min(1),
+        LEMON_SQUEEZY_VARIANT_ID: z.string().min(1),
     },
     createFinalSchema: (env) => {
         return z.object(env).transform(({ ...rest }) => {

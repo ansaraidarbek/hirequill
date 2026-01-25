@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect } from "react";
-import { SignIn as ClerkSignIn, SignedOut, useUser } from "@clerk/nextjs";
+import { SignIn as ClerkSignIn, useUser } from "@clerk/nextjs";
 import Icon from "@/components/ui/AppIcon";
+import { SignedOut } from "@/services/clerk/components/SignInStatus";
 
 interface SignInProps {
     isOpen: boolean;

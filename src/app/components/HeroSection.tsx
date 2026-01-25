@@ -1,7 +1,7 @@
 "use client";
 
 import Icon from "@/components/ui/AppIcon";
-import { SignedOut } from "@clerk/nextjs";
+import { SignedOut } from "@/services/clerk/components/SignInStatus";
 import GenerateCoverLetter from "@/features/generate-cover-letter";
 import { Limitations } from "@/db/types/limitationType";
 import { CoverLetterInformation } from "@/components/utils/prepareInformation";

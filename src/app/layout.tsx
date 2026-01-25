@@ -15,9 +15,12 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-    metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://hirequill.ai"),
+    metadataBase: new URL(
+        process.env.NEXT_PUBLIC_SITE_URL || "https://hirequill.ai",
+    ),
     title: {
-        default: "HireQuill AI - AI-Powered Cover Letter Generator | Never Write a Cover Letter Again",
+        default:
+            "HireQuill AI - AI-Powered Cover Letter Generator | Never Write a Cover Letter Again",
         template: "%s | HireQuill AI",
     },
     description:
@@ -44,7 +47,9 @@ export const metadata: Metadata = {
     },
     icons: {
         icon: [{ url: "/favicon.ico", type: "image/x-icon" }],
-        apple: [{ url: "/favicon.ico", sizes: "180x180", type: "image/x-icon" }],
+        apple: [
+            { url: "/favicon.ico", sizes: "180x180", type: "image/x-icon" },
+        ],
     },
     manifest: "/manifest.json",
     openGraph: {
@@ -103,20 +108,7 @@ export default function RootLayout({
     return (
         <ClerkProvider>
             <html lang="en" suppressHydrationWarning>
-                <body className="antialiased">
-                    {children}
-
-                    <script
-                        type="module"
-                        async
-                        src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Fhirequill2264back.builtwithrocket.new&_be=https%3A%2F%2Fapplication.rocket.new&_v=0.1.12"
-                    />
-                    <script
-                        type="module"
-                        defer
-                        src="https://static.rocket.new/rocket-shot.js?v=0.0.2"
-                    />
-                </body>
+                <body className="antialiased">{children}</body>
             </html>
         </ClerkProvider>
     );

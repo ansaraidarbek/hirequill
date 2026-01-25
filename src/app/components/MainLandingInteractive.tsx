@@ -41,10 +41,10 @@ const MainLandingInteractive = ({
                 cvInformation={cvInformation}
             />
             <HowItWorksSection />
-            <PricingSection />
+            <PricingSection onLoginClick={onLoginClick} />
             <SocialProofSection />
             <FAQSection />
-            <CTASection />
+            <CTASection onLoginClick={onLoginClick} />
             {/* Cover Letter Drawer */}
             {Boolean(information?.coverLetter) && information.isDrawerOpen && (
                 <CoverLetterDrawer

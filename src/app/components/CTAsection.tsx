@@ -1,7 +1,13 @@
-import Icon from "@/components/ui/AppIcon";
-import { SignedIn } from "@/services/clerk/components/SignInStatus";
+"use client";
 
-const CTASection = () => {
+import Icon from "@/components/ui/AppIcon";
+import { SignedOut } from "@/services/clerk/components/SignInStatus";
+
+interface CTASectionProps {
+    onLoginClick: () => void;
+}
+
+const CTASection = ({ onLoginClick }: CTASectionProps) => {
     return (
         <section className="py-20 lg:py-32 bg-gradient-to-br from-primary via-secondary to-primary relative overflow-hidden">
             <div className="absolute inset-0 opacity-10">
@@ -34,8 +40,11 @@ const CTASection = () => {
                     </p>
 
                     <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                        <SignedIn>
-                            <button className="px-10 py-5 bg-white text-primary rounded-lg font-semibold text-lg hover:shadow-2xl hover:scale-105 transition-all duration-200 font-cta inline-flex items-center space-x-2">
+                        <SignedOut>
+                            <button
+                                onClick={onLoginClick}
+                                className="px-10 py-5 bg-white text-primary rounded-lg font-semibold text-lg hover:shadow-2xl hover:scale-105 transition-all duration-200 font-cta inline-flex items-center space-x-2"
+                            >
                                 <span>Login</span>
                                 <Icon
                                     name="ArrowRightIcon"
@@ -43,7 +52,7 @@ const CTASection = () => {
                                     variant="solid"
                                 />
                             </button>
-                        </SignedIn>
+                        </SignedOut>
                         <button
                             className="px-10 py-5 bg-transparent text-white border-2 border-white rounded-lg font-semibold text-lg hover:bg-white/10 transition-all duration-200 font-cta"
                             onClick={(e) => {

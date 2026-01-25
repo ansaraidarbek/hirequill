@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Icon from "@/components/ui/AppIcon";
-import { SignedIn } from "@/services/clerk/components/SignInStatus";
+import { SignedOut, SignedIn } from "@/services/clerk/components/SignInStatus";
 
 interface PricingTier {
     id: string;
@@ -14,10 +14,21 @@ interface PricingTier {
     cta: string;
     popular: boolean;
     limit: string;
+    onClick: () => void;
 }
 
-const PricingSection = () => {
+type PricingSectionProps = {
+    onLoginClick: () => void;
+};
+
+const PricingSection = ({ onLoginClick }: PricingSectionProps) => {
     const [billingCycle] = useState<"monthly" | "annual">("monthly");
+    const [isLoading, setIsLoading] = useState(false);
+
+    const handleSubscribe = () => {
+        setIsLoading(true);
+        window.location.href = "/api/checkout"; // navigation, not fetch => no CORS
+    };
 
     const pricingTiers: PricingTier[] = [
         {
@@ -35,6 +46,7 @@ const PricingSection = () => {
             cta: "Login",
             popular: false,
             limit: "2 letters/month",
+            onClick: onLoginClick,
         },
         {
             id: "monthly",
@@ -52,6 +64,7 @@ const PricingSection = () => {
             cta: "Get Started Now",
             popular: true,
             limit: "Unlimited",
+            onClick: handleSubscribe,
         },
     ];
 
@@ -152,8 +165,9 @@ const PricingSection = () => {
                                 ))}
                             </ul>
 
-                            <SignedIn>
+                            <CheckButton isLogin={tier.id === "free"}>
                                 <button
+                                    onClick={tier.onClick}
                                     className={`w-full px-6 py-4 rounded-lg font-semibold text-lg transition-all duration-200 font-cta ${
                                         tier.popular
                                             ? "bg-destructive text-destructive-foreground hover:shadow-xl hover:scale-105"
@@ -162,19 +176,28 @@ const PricingSection = () => {
                                 >
                                     {tier.cta}
                                 </button>
-                            </SignedIn>
-
-                            {tier.id === "free" && (
-                                <p className="text-xs text-center text-muted-foreground mt-4 font-body">
-                                    No credit card required
-                                </p>
-                            )}
+                                {tier.id === "free" && (
+                                    <p className="text-xs text-center text-muted-foreground mt-4 font-body">
+                                        No credit card required
+                                    </p>
+                                )}
+                            </CheckButton>
                         </div>
                     ))}
                 </div>
             </div>
         </section>
     );
+};
+
+const CheckButton = ({
+    isLogin,
+    children,
+}: {
+    isLogin: boolean;
+    children: React.ReactNode;
+}) => {
+    return isLogin ? <SignedOut>{children}</SignedOut> : children;
 };
 
 export default PricingSection;

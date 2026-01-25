@@ -57,6 +57,7 @@
         "@clerk/themes": "^2.4.47",
         "@dhiwise/component-tagger": "^1.0.14",
         "@heroicons/react": "^2.2.0",
+        "@lemonsqueezy/lemonsqueezy.js": "^4.0.0",
         "@supabase/supabase-js": "^2.90.1",
         "@t3-oss/env-nextjs": "^0.13.10",
         "@tailwindcss/forms": "^0.5.10",
