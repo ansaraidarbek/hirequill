@@ -44,7 +44,15 @@ const Header = ({ className = "", onLoginClick }: HeaderProps) => {
             <div className="container mx-auto px-4 lg:px-8">
                 <div className="flex items-center justify-between h-16">
                     <Link
-                        href="/main-landing-page"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            document
+                                .getElementById(navigationItems[0].scrollTo)
+                                ?.scrollIntoView({
+                                    behavior: "smooth",
+                                });
+                        }}
+                        href="#"
                         className="flex items-center space-x-2 hover:opacity-80 transition-opacity"
                     >
                         <svg

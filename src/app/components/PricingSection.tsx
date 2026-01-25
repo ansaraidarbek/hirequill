@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Icon from "@/components/ui/AppIcon";
+import { SignedIn } from "@/services/clerk/components/SignInStatus";
 
 interface PricingTier {
     id: string;
@@ -151,15 +152,17 @@ const PricingSection = () => {
                                 ))}
                             </ul>
 
-                            <button
-                                className={`w-full px-6 py-4 rounded-lg font-semibold text-lg transition-all duration-200 font-cta ${
-                                    tier.popular
-                                        ? "bg-destructive text-destructive-foreground hover:shadow-xl hover:scale-105"
-                                        : "bg-card text-foreground border-2 border-border hover:border-primary"
-                                }`}
-                            >
-                                {tier.cta}
-                            </button>
+                            <SignedIn>
+                                <button
+                                    className={`w-full px-6 py-4 rounded-lg font-semibold text-lg transition-all duration-200 font-cta ${
+                                        tier.popular
+                                            ? "bg-destructive text-destructive-foreground hover:shadow-xl hover:scale-105"
+                                            : "bg-card text-foreground border-2 border-border hover:border-primary"
+                                    }`}
+                                >
+                                    {tier.cta}
+                                </button>
+                            </SignedIn>
 
                             {tier.id === "free" && (
                                 <p className="text-xs text-center text-muted-foreground mt-4 font-body">

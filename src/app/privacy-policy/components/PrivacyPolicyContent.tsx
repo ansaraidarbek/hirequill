@@ -27,22 +27,24 @@ const tableOfContentsItems: TOCItem[] = [
 ];
 
 const informationWeCollect = [
-    "Account Information: Email address, name, and password (encrypted)",
-    "CV/Resume Data: Documents you upload for cover letter generation",
-    "Job Application Data: Job descriptions and company information you provide",
-    "Generated Content: Cover letters created through our AI service",
-    "Usage Data: How you interact with our platform, features used, and generation history",
-    "Device Information: Browser type, IP address, operating system, and device identifiers",
+    "Account Information: Email address, name, and profile image (authentication handled by Clerk)",
+    "CV/Resume Data: Documents you upload for cover letter generation, stored securely in our database",
+    "Job Application Data: Job descriptions, company names, and position titles you provide",
+    "Generated Content: Cover letters created through our AI service (stored for paid users only)",
+    "Usage Analytics: Generation counts, company-specific usage tracking, weekly usage statistics, and subscription plan information",
+    "Device Information: Browser type, IP address, operating system, and device identifiers (collected automatically)",
     "Payment Information: Processed securely through our payment provider (we never store full card details)",
 ];
 
 const howWeUseData = [
-    "Generate personalized cover letters using AI technology",
-    "Improve and optimize our AI generation algorithms",
+    "Generate personalized cover letters using OpenAI's AI technology",
+    "Normalize and resolve company names for accurate usage tracking",
+    "Track usage patterns to enforce fair use policies and throttling",
+    "Store CV data and generated cover letters (for paid users) in our secure database",
     "Provide customer support and respond to your inquiries",
     "Send service updates, security alerts, and account notifications",
     "Process payments and manage subscriptions",
-    "Analyze usage patterns to enhance user experience",
+    "Analyze usage patterns to enhance user experience and service performance",
     "Prevent fraud and ensure platform security",
     "Comply with legal obligations and enforce our Terms of Service",
 ];
@@ -77,18 +79,20 @@ const cookieTypes = [
 
 const dataRetention = [
     "Active Accounts: Data retained while your account is active",
-    "Generated Content: Cover letters stored for 12 months after generation",
+    "CV/Resume Data: Stored for the duration of your account, deleted upon account closure",
+    "Generated Cover Letters: Stored for paid users (Monthly and Forever plans) for 12 months after generation; Free tier users' cover letters are not stored",
+    "Usage Analytics: Retained for service optimization and fair use enforcement",
     "Deleted Accounts: Personal data permanently deleted within 30 days of account closure",
     "Legal Requirements: Some data may be retained longer if required by law",
     "Backup Systems: Deleted data removed from backups within 90 days",
 ];
 
 const thirdPartyServices = [
-    "Payment Processing: Stripe for secure subscription and payment handling",
-    "Email Services: SendGrid for transactional and notification emails",
-    "Analytics: Google Analytics for usage tracking (anonymized data)",
-    "Cloud Hosting: AWS for secure data storage and platform infrastructure",
-    "AI Processing: OpenAI API for cover letter generation (data not used for training)",
+    "Authentication: Clerk for secure user authentication, account management, and session handling",
+    "AI Processing: OpenAI API for cover letter generation and company name resolution (data not used for training)",
+    "Payment Processing: Payment providers for secure subscription and payment handling (when implemented)",
+    "Cloud Hosting: Secure cloud infrastructure for data storage and platform hosting",
+    "Database: PostgreSQL database for secure data storage with encryption at rest",
 ];
 
 export default function PrivacyPolicyContent() {
@@ -106,7 +110,7 @@ export default function PrivacyPolicyContent() {
                         </p>
                     </div>
 
-                    <LastUpdated date="January 6, 2026" />
+                    <LastUpdated date="January 25, 2026" />
 
                     <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
                         <div className="lg:col-span-1">
@@ -156,6 +160,14 @@ export default function PrivacyPolicyContent() {
                                     We only collect data necessary to deliver
                                     our service effectively. We never sell your
                                     personal information to third parties.
+                                </p>
+                                <p className="mt-2">
+                                    <strong>Note on Authentication:</strong> We
+                                    use Clerk for authentication services. Your
+                                    password and authentication credentials are
+                                    managed by Clerk, not stored directly in our
+                                    systems. Clerk's privacy practices govern
+                                    authentication data handling.
                                 </p>
                             </PolicySection>
 
@@ -230,18 +242,24 @@ export default function PrivacyPolicyContent() {
                                 <PolicyList
                                     ordered
                                     items={[
-                                        "You upload your CV and provide job description details",
-                                        "Our system securely transmits this data to OpenAI's API for processing",
-                                        "The AI generates a personalized cover letter based on your inputs",
-                                        "Generated content is returned to you and stored in your account",
+                                        "You upload your CV and provide job description details including company name and position title",
+                                        "Our system normalizes company names using OpenAI's API to ensure accurate usage tracking",
+                                        "Your CV data and job information are securely transmitted to OpenAI's API for cover letter generation",
+                                        "The AI generates a personalized cover letter based on your CV and job requirements",
+                                        "Generated content is returned to you immediately",
+                                        "For paid users (Monthly and Forever plans), cover letters are stored in your account for future access",
+                                        "Free tier users receive cover letters but they are not stored in our database",
                                         "Your data is NOT used to train OpenAI's models or any other AI systems",
                                     ]}
                                 />
                                 <p className="mt-4">
                                     We have a Data Processing Agreement with
                                     OpenAI that prohibits them from using your
-                                    data for model training. Your CV and
-                                    generated letters remain confidential.
+                                    data for model training. Your CV, company
+                                    information, and generated letters remain
+                                    confidential. OpenAI processes your data
+                                    solely for the purpose of generating your
+                                    cover letter and normalizing company names.
                                 </p>
                             </PolicySection>
 
@@ -256,11 +274,22 @@ export default function PrivacyPolicyContent() {
                                 </p>
                                 <PolicyList items={cookieTypes} />
                                 <p className="mt-4">
+                                    <strong>Usage Tracking:</strong> We track
+                                    usage patterns internally, including
+                                    generation counts, company-specific usage,
+                                    and weekly statistics. This data helps us
+                                    enforce fair use policies, implement
+                                    throttling for excessive usage, and improve
+                                    service performance. Usage data is
+                                    associated with your account but is not shared
+                                    with third parties for marketing purposes.
+                                </p>
+                                <p className="mt-4">
                                     You can control cookie preferences through
                                     your browser settings. Disabling essential
                                     cookies may affect platform functionality.
                                     Analytics data is anonymized and aggregated
-                                    to protect your privacy.
+                                    to protect your privacy where possible.
                                 </p>
                             </PolicySection>
 
@@ -351,7 +380,7 @@ export default function PrivacyPolicyContent() {
                                     all inquiries promptly and transparently.
                                 </p>
                                 <ContactInfo
-                                    email="privacy@HireQuillai.com"
+                                    email="privacy@hirequill.ai"
                                     responseTime="We respond to all privacy inquiries within 48 hours"
                                 />
                             </PolicySection>

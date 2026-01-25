@@ -96,14 +96,49 @@ export async function generateCoverLetterForPaidUser(
         const weeklyCompanies = await getThisWeeksUserCompanies(userId);
         console.log("Weekly companies used:", weeklyCompanies);
 
+        // Calculate total weekly generations
+        const totalWeeklyGenerations = weeklyCompanies.reduce(
+            (sum, company) => sum + company.generations,
+            0,
+        );
+
         const resolved = await resolveCompanyKey({
             currentCompanyName: companyKey,
-            weeklyCompanyKeys: weeklyCompanies,
+            weeklyCompanyKeys: weeklyCompanies.map((c) => c.companyKey),
             client: getOpenAIClient(),
             model: "gpt-5-nano",
         });
         companyKey = resolved.companyKey;
         console.log("Resolved company key:", companyKey);
+
+        // Find the current generation count for this company
+        const companyUsage = weeklyCompanies.find(
+            (c) => c.companyKey === companyKey,
+        );
+        const companyGenerations = companyUsage?.generations ?? 0;
+
+        // Throttle check: Apply delay if user exceeds limits
+        // Check if current count is >= threshold (meaning next generation will exceed it)
+        const shouldThrottle =
+            companyGenerations >= 4 || totalWeeklyGenerations >= 200;
+
+        if (shouldThrottle) {
+            // Calculate delay based on how much over the limit
+            // Base delay of 5 seconds, plus additional time based on excess
+            const baseDelay = 5000; // 5 seconds
+            const companyExcess = Math.max(0, companyGenerations - 4);
+            const weeklyExcess = Math.max(0, totalWeeklyGenerations - 200);
+            const excessDelay =
+                companyExcess * 2000 + weeklyExcess * 100; // 2s per company excess, 100ms per weekly excess
+            const totalDelay = baseDelay + excessDelay;
+
+            console.log(
+                `Throttling request: companyGenerations=${companyGenerations}, totalWeeklyGenerations=${totalWeeklyGenerations}, delay=${totalDelay}ms`,
+            );
+
+            // Artificially delay the response
+            await new Promise((resolve) => setTimeout(resolve, totalDelay));
+        }
 
         const { consumed: didConsume } = await consumePaidGeneration(
             userId,
@@ -210,10 +245,13 @@ export async function generateCoverLetterForForeverUser(
 
 export async function getThisWeeksUserCompanies(
     userId: string,
-): Promise<string[]> {
+): Promise<Array<{ companyKey: string; generations: number }>> {
     const weekStart = getWeekStartUTC();
     const rows = await db
-        .select({ companyKey: UserCompanyUsageWeekTable.companyKey })
+        .select({
+            companyKey: UserCompanyUsageWeekTable.companyKey,
+            generations: UserCompanyUsageWeekTable.count,
+        })
         .from(UserCompanyUsageWeekTable)
         .where(
             and(
@@ -221,7 +259,10 @@ export async function getThisWeeksUserCompanies(
                 eq(UserCompanyUsageWeekTable.weekStart, weekStart),
             ),
         );
-    return rows.map((r) => r.companyKey);
+    return rows.map((r) => ({
+        companyKey: r.companyKey,
+        generations: r.generations,
+    }));
 }
 
 export async function insertUserCSV(

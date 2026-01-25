@@ -12,13 +12,13 @@ export async function POST(req: NextRequest) {
 
         switch (evt.type) {
             case "user.created":
-                clerkUserCreate({ event: evt });
+                await clerkUserCreate({ event: evt });
                 break;
             case "user.updated":
-                clerkUserUpdate({ event: evt });
+                await clerkUserUpdate({ event: evt });
                 break;
             case "user.deleted":
-                clerkUserDelete({ event: evt });
+                await clerkUserDelete({ event: evt });
                 break;
             default:
                 break;

@@ -20,14 +20,23 @@ export default function PageClient({
     } = useSignInModal();
 
     return (
-        <div style={{ overflowX: "hidden", overflowY: "auto" }}>
+        <div
+            style={{
+                display: "flex",
+                flexDirection: "column",
+                minHeight: "100vh",
+                position: "relative",
+            }}
+        >
             <Header onLoginClick={openSignIn} />
-            <MainLandingInteractive
-                onLoginClick={openSignIn}
-                totalGenerations={initialData.totalGenerations}
-                limitations={initialData.limitations}
-                cvInformation={initialData.cvInformation}
-            />
+            <main id="main-content" role="main">
+                <MainLandingInteractive
+                    onLoginClick={openSignIn}
+                    totalGenerations={initialData.totalGenerations}
+                    limitations={initialData.limitations}
+                    cvInformation={initialData.cvInformation}
+                />
+            </main>
             <Footer />
             <SignIn isOpen={isSignInOpen} onClose={closeSignIn} />
         </div>

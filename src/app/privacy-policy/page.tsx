@@ -9,10 +9,12 @@ export const metadata: Metadata = {
 };
 
 export default function PrivacyPolicyPage() {
-    <div className="min-h-screen flex flex-col bg-background">
-        <main className="flex-1">
-            <PrivacyPolicyContent />
-        </main>
-        <Footer />
-    </div>
+    return (
+        <div className="min-h-screen flex flex-col bg-background">
+            <main className="flex-1">
+                <PrivacyPolicyContent />
+            </main>
+            <Footer />
+        </div>
+    );
 }

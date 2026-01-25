@@ -1,0 +1,14 @@
+# robots.txt for HireQuill AI
+User-agent: *
+Allow: /
+
+# Disallow admin and API routes
+Disallow: /api/
+Disallow: /_next/
+Disallow: /admin/
+
+# Sitemap location
+Sitemap: https://hirequill.ai/sitemap.xml
+
+# Crawl-delay (optional, adjust as needed)
+Crawl-delay: 1

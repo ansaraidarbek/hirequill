@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import Icon from "@/components/ui/AppIcon";
 
@@ -10,9 +12,9 @@ const Footer = ({ className = "" }: FooterProps) => {
 
     const footerLinks = {
         product: [
-            { label: "Home", href: "/main-landing-page" },
-            { label: "Features", href: "/main-landing-page#features" },
-            { label: "Pricing", href: "/main-landing-page#pricing" },
+            { label: "Home", href: "main-landing-page" },
+            { label: "How It Works", href: "how-it-works" },
+            { label: "Pricing", href: "pricing" },
         ],
         legal: [
             { label: "Privacy Policy", href: "/privacy-policy" },
@@ -33,7 +35,15 @@ const Footer = ({ className = "" }: FooterProps) => {
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
                     <div className="col-span-1 md:col-span-2">
                         <Link
-                            href="/main-landing-page"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                document
+                                    .getElementById(footerLinks.product[0].href)
+                                    ?.scrollIntoView({
+                                        behavior: "smooth",
+                                    });
+                            }}
+                            href="#"
                             className="flex items-center space-x-2 mb-4"
                         >
                             <svg
@@ -95,7 +105,15 @@ const Footer = ({ className = "" }: FooterProps) => {
                             {footerLinks.product.map((link) => (
                                 <li key={link.href}>
                                     <Link
-                                        href={link.href}
+                                        href={"#"}
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            document
+                                                .getElementById(link.href)
+                                                ?.scrollIntoView({
+                                                    behavior: "smooth",
+                                                });
+                                        }}
                                         className="text-sm text-gray-400 hover:text-white transition-colors font-body"
                                     >
                                         {link.label}
