@@ -35,6 +35,7 @@ export default async function Home() {
               totalGenerations: 0,
               limitations: { exist: false, amount: 0 },
               cvInformation: null,
+              currentPlan: null,
           };
     
     // Structured data for SEO

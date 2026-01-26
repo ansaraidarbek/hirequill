@@ -9,7 +9,6 @@ export const generateCoverLetterFromData = async (data: CoverLetterRequest) => {
         data.cvFileData.base64,
         data.cvFileData.fileType,
     );
-    console.log("Extracted CV text length:", cvText);
     // Generate cover letter using AI
     const coverLetter = await generateCoverLetter({
         cvText,
@@ -221,7 +220,6 @@ async function researchCompany(
 6. Position Context: How does the "${positionTitle}" role fit into their organization and what might they value in this position?
 
 Provide a concise but comprehensive summary (200-300 words) that will help write a highly personalized cover letter. Focus on actionable insights about what the company values and how a candidate could align with their mission.`;
-        console.log("THE MODEL BEING USED FOR RESEARCH IS:", RESEARCH_MODEL);
         const researchCompletion = await client.chat.completions.create({
             model: RESEARCH_MODEL,
             messages: [
@@ -368,11 +366,6 @@ Structure:
 
 Start with "Dear Hiring Manager," or "Dear Hiring Team,".
 `;
-
-        console.log(
-            "THE MODEL BEING USED FOR COVER LETTER IS:",
-            COVER_LETTER_MODEL,
-        );
         const completion = await client.chat.completions.create({
             model: COVER_LETTER_MODEL,
             messages: [

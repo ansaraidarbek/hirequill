@@ -35,6 +35,7 @@ export default function PageClient({
                     totalGenerations={initialData.totalGenerations}
                     limitations={initialData.limitations}
                     cvInformation={initialData.cvInformation}
+                    currentPlan={initialData.currentPlan}
                 />
             </main>
             <Footer />

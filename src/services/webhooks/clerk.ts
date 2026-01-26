@@ -12,7 +12,7 @@ export const clerkUserCreate = async ({ event }: { event: WebhookEvent }) => {
     const email = userData.email_addresses.find(
         (email) => email.id === userData.primary_email_address_id,
     );
-    console.log("User created webhook received for user ID:", userData.id);
+    
     if (email == null) {
         throw new Error("No primary email found");
     }

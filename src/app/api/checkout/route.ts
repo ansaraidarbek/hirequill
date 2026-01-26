@@ -97,5 +97,5 @@ export async function GET(req: NextRequest) {
     }
 
     // 5) Redirect user to Lemon checkout URL (official flow)
-    return NextResponse.redirect(checkoutUrl, { status: 302 });
+    return NextResponse.json({ checkoutUrl }, { status: 200 });
 }

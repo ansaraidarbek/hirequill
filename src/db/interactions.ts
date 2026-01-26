@@ -89,12 +89,10 @@ export async function generateCoverLetterForPaidUser(
 
     try {
         if (!validatedData.cvFileData?.id) {
-            console.log("Inserting user CV into database");
             await insertUserCSV(userId, validatedData);
         }
 
         const weeklyCompanies = await getThisWeeksUserCompanies(userId);
-        console.log("Weekly companies used:", weeklyCompanies);
 
         // Calculate total weekly generations
         const totalWeeklyGenerations = weeklyCompanies.reduce(
@@ -109,7 +107,6 @@ export async function generateCoverLetterForPaidUser(
             model: "gpt-5-nano",
         });
         companyKey = resolved.companyKey;
-        console.log("Resolved company key:", companyKey);
 
         // Find the current generation count for this company
         const companyUsage = weeklyCompanies.find(
@@ -132,10 +129,6 @@ export async function generateCoverLetterForPaidUser(
                 companyExcess * 2000 + weeklyExcess * 100; // 2s per company excess, 100ms per weekly excess
             const totalDelay = baseDelay + excessDelay;
 
-            console.log(
-                `Throttling request: companyGenerations=${companyGenerations}, totalWeeklyGenerations=${totalWeeklyGenerations}, delay=${totalDelay}ms`,
-            );
-
             // Artificially delay the response
             await new Promise((resolve) => setTimeout(resolve, totalDelay));
         }
@@ -153,10 +146,6 @@ export async function generateCoverLetterForPaidUser(
                 limitations: null,
             };
         }
-        console.log(
-            "Generating cover letter with resolved company key:",
-            companyKey,
-        );
         const coverLetter = await generateCoverLetterFromData({
             ...validatedData,
             companyName: companyKey,
@@ -210,10 +199,7 @@ export async function generateCoverLetterForForeverUser(
                 limitations: null,
             };
         }
-        console.log(
-            "Generating cover letter with resolved company key:",
-            companyKey,
-        );
+
         const coverLetter = await generateCoverLetterFromData({
             ...validatedData,
             companyName: companyKey,

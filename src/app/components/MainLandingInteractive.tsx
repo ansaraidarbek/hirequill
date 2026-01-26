@@ -17,6 +17,7 @@ interface MainLandingInteractiveProps {
     limitations: Limitations;
     totalGenerations: number;
     cvInformation: CVType | null;
+    currentPlan: "monthly" | "forever" | "free" | null;
 }
 
 const MainLandingInteractive = ({
@@ -24,6 +25,7 @@ const MainLandingInteractive = ({
     limitations,
     totalGenerations,
     cvInformation,
+    currentPlan,
 }: MainLandingInteractiveProps) => {
     const [information, setInformation] = useState<CoverLetterInformation>({
         isDrawerOpen: false,
@@ -41,7 +43,7 @@ const MainLandingInteractive = ({
                 cvInformation={cvInformation}
             />
             <HowItWorksSection />
-            <PricingSection onLoginClick={onLoginClick} />
+            <PricingSection onLoginClick={onLoginClick} currentPlan={currentPlan} />
             <SocialProofSection />
             <FAQSection />
             <CTASection onLoginClick={onLoginClick} />

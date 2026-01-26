@@ -19,15 +19,32 @@ interface PricingTier {
 
 type PricingSectionProps = {
     onLoginClick: () => void;
+    currentPlan: "monthly" | "forever" | "free" | null;
 };
 
-const PricingSection = ({ onLoginClick }: PricingSectionProps) => {
-    const [billingCycle] = useState<"monthly" | "annual">("monthly");
+const PricingSection = ({ onLoginClick, currentPlan }: PricingSectionProps) => {
     const [isLoading, setIsLoading] = useState(false);
 
-    const handleSubscribe = () => {
+    const handleSubscribe = async () => {
         setIsLoading(true);
-        window.location.href = "/api/checkout"; // navigation, not fetch => no CORS
+
+        try {
+            const res = await fetch("/api/checkout", { method: "GET" });
+            const data = await res.json().catch(() => null);
+
+            if (!res.ok) {
+                throw new Error(data?.message || "Failed to create checkout");
+            }
+
+            if (!data?.checkoutUrl) {
+                throw new Error("Checkout URL not received");
+            }
+
+            window.location.assign(data.checkoutUrl);
+        } catch (e) {
+            alert(e instanceof Error ? e.message : "Checkout failed");
+            setIsLoading(false);
+        }
     };
 
     const pricingTiers: PricingTier[] = [
@@ -117,6 +134,11 @@ const PricingSection = ({ onLoginClick }: PricingSectionProps) => {
                             )}
 
                             <div className="text-center mb-8">
+                                <p className="text-sm text-primary font-medium mb-1 font-body">
+                                    {tier.id === currentPlan
+                                        ? "Your Current Plan"
+                                        : ""}
+                                </p>
                                 <h3 className="text-2xl font-bold text-foreground mb-2 font-headline">
                                     {tier.name}
                                 </h3>
@@ -165,7 +187,10 @@ const PricingSection = ({ onLoginClick }: PricingSectionProps) => {
                                 ))}
                             </ul>
 
-                            <CheckButton isLogin={tier.id === "free"}>
+                            <CheckButton
+                                isLogin={tier.id === "free"}
+                                paidUser={currentPlan !== "free"}
+                            >
                                 <button
                                     onClick={tier.onClick}
                                     className={`w-full px-6 py-4 rounded-lg font-semibold text-lg transition-all duration-200 font-cta ${
@@ -192,12 +217,18 @@ const PricingSection = ({ onLoginClick }: PricingSectionProps) => {
 
 const CheckButton = ({
     isLogin,
+    paidUser,
     children,
 }: {
     isLogin: boolean;
     children: React.ReactNode;
+    paidUser: boolean;
 }) => {
-    return isLogin ? <SignedOut>{children}</SignedOut> : children;
+    return isLogin ? (
+        <SignedOut>{children}</SignedOut>
+    ) : paidUser ? null : (
+        children
+    );
 };
 
 export default PricingSection;
