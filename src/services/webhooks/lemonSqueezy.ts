@@ -75,9 +75,9 @@ export async function handleSubscriptionCreated(
         plan: "monthly",
         status: "active",
         providerSubscriptionId: payload.data.id,
-        currentPeriodStart: now,
-        currentPeriodEnd: periodEnd,
-        dayStarted: getDay(),
+        currentPeriodStart: new Date(payload.data.attributes.created_at) || now,
+        currentPeriodEnd: new Date(payload.data.attributes.renews_at) || periodEnd,
+        dayStarted: getDay(payload.data.attributes.created_at),
         updatedAt: now,
     });
 }
@@ -101,9 +101,9 @@ export async function handleSubscriptionUpdated(
         plan: "monthly",
         status: "active",
         providerSubscriptionId: payload.data.id,
-        currentPeriodStart: now,
-        currentPeriodEnd: periodEnd,
-        dayStarted: getDay(),
+        currentPeriodStart: new Date(payload.data.attributes.created_at) || now,
+        currentPeriodEnd: new Date(payload.data.attributes.renews_at) || periodEnd,
+        dayStarted: getDay(payload.data.attributes.created_at),
         updatedAt: now,
     });
 }

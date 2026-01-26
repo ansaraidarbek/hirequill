@@ -15,6 +15,7 @@ interface PricingTier {
     popular: boolean;
     limit: string;
     onClick: () => void;
+    loadingCta: string;
 }
 
 type PricingSectionProps = {
@@ -23,6 +24,7 @@ type PricingSectionProps = {
 };
 
 const PricingSection = ({ onLoginClick, currentPlan }: PricingSectionProps) => {
+    console.log("currentPlan:", currentPlan);
     const [isLoading, setIsLoading] = useState(false);
 
     const handleSubscribe = async () => {
@@ -61,6 +63,7 @@ const PricingSection = ({ onLoginClick, currentPlan }: PricingSectionProps) => {
                 "Email support",
             ],
             cta: "Login",
+            loadingCta: "Redirecting...",
             popular: false,
             limit: "2 letters/month",
             onClick: onLoginClick,
@@ -79,6 +82,7 @@ const PricingSection = ({ onLoginClick, currentPlan }: PricingSectionProps) => {
                 "Priority email support",
             ],
             cta: "Get Started Now",
+            loadingCta: "Redirecting...",
             popular: true,
             limit: "Unlimited",
             onClick: handleSubscribe,
@@ -135,7 +139,8 @@ const PricingSection = ({ onLoginClick, currentPlan }: PricingSectionProps) => {
 
                             <div className="text-center mb-8">
                                 <p className="text-sm text-primary font-medium mb-1 font-body">
-                                    {tier.id === currentPlan
+                                    {tier.id === currentPlan ||
+                                    (tier.id === "free" && currentPlan === null)
                                         ? "Your Current Plan"
                                         : ""}
                                 </p>
@@ -199,7 +204,7 @@ const PricingSection = ({ onLoginClick, currentPlan }: PricingSectionProps) => {
                                             : "bg-card text-foreground border-2 border-border hover:border-primary"
                                     }`}
                                 >
-                                    {tier.cta}
+                                    {isLoading ? tier.loadingCta : tier.cta}
                                 </button>
                                 {tier.id === "free" && (
                                     <p className="text-xs text-center text-muted-foreground mt-4 font-body">

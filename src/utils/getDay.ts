@@ -1,5 +1,5 @@
-export const getDay = () => {
-    const day = new Date().getDay();
+export const getDay = (targetDay: string | undefined) => {
+    const day = targetDay ? new Date(targetDay).getDay() : new Date().getDay();
     switch (day) {
         case 0:
             return "sunday";
