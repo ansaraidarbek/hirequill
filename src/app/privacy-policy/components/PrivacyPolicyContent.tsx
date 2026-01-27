@@ -228,7 +228,7 @@ export default function PrivacyPolicyContent() {
 
                             <PolicySection id="contact-us" title="Contact Us">
                                 <ContactInfo
-                                    email="privacy@hirequill.ai"
+                                    email="privacy@hirequill.dev"
                                     responseTime="We respond within 48 hours"
                                 />
                             </PolicySection>

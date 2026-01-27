@@ -301,8 +301,7 @@ const GenerateCoverLetter = ({
                     {localLimitations?.amount <= 0 ? (
                         <div className="px-4 py-3 bg-error/10 border border-error/20 rounded-lg">
                             <p className="text-sm text-error font-body">
-                                You have reached your limit of{" "}
-                                {localLimitations.amount} generations. Please
+                                You have reached your limit of 2 generations. Please
                                 upgrade to a paid plan to continue generating
                                 cover letters.
                             </p>

@@ -186,7 +186,7 @@ const TermsContent = () => {
             title: "13. Contact",
             content:
                 `If you have questions about these Terms, contact us:\n\n` +
-                `**Email:** support@hirequill.ai`,
+                `**Email:** support@hirequill.dev`,
         },
     ];
 
@@ -369,14 +369,14 @@ const TermsContent = () => {
                                             support team.
                                         </p>
                                         <a
-                                            href="mailto:support@hirequill.ai"
+                                            href="mailto:support@hirequill.dev"
                                             className="inline-flex items-center space-x-2 text-sm font-semibold text-primary hover:text-primary/80 transition-colors font-cta"
                                         >
                                             <Icon
                                                 name="EnvelopeIcon"
                                                 size={16}
                                             />
-                                            <span>support@hirequill.ai</span>
+                                            <span>support@hirequill.dev</span>
                                         </a>
                                     </div>
                                 </div>
