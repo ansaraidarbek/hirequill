@@ -194,7 +194,9 @@ const PricingSection = ({ onLoginClick, currentPlan }: PricingSectionProps) => {
 
                             <CheckButton
                                 isLogin={tier.id === "free"}
-                                paidUser={currentPlan !== "free"}
+                                paidUser={Boolean(
+                                    currentPlan && currentPlan !== "free",
+                                )}
                             >
                                 <button
                                     onClick={tier.onClick}
@@ -231,9 +233,8 @@ const CheckButton = ({
 }) => {
     return isLogin ? (
         <SignedOut>{children}</SignedOut>
-    ) : paidUser ? null : (
-        children
-    );
+    ) : paidUser ? null : // children
+    null;
 };
 
 export default PricingSection;
