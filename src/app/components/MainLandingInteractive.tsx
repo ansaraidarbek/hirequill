@@ -5,7 +5,7 @@ import HowItWorksSection from "./HowItWorksSection";
 import PricingSection from "./PricingSection";
 import SocialProofSection from "./SocialProofSection";
 import FAQSection from "./FAQSection";
-import CTASection from "./CTASection";
+import CTASection from "./CTAsection";
 import { Limitations } from "@/db/types/limitationType";
 import { useState } from "react";
 import CoverLetterDrawer from "@/features/generate-cover-letter/components/__CoverLetterDrawer";
