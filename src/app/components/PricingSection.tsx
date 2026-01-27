@@ -71,7 +71,7 @@ const PricingSection = ({ onLoginClick, currentPlan }: PricingSectionProps) => {
         {
             id: "monthly",
             name: "Monthly Plan",
-            price: 19,
+            price: 10,
             period: "month",
             description: "For active job seekers",
             features: [

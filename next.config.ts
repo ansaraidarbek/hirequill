@@ -13,7 +13,6 @@ const nextConfig: NextConfig = {
     compress: true,
     poweredByHeader: false, // Remove X-Powered-By header for security
     reactStrictMode: true,
-    swcMinify: true, // Use SWC minification for better performance
     // Image optimization
     images: {
         remotePatterns: [

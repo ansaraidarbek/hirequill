@@ -19,98 +19,174 @@ const TermsContent = () => {
         setIsHydrated(true);
     }, []);
 
-    const lastUpdated = "January 25, 2026";
+    const lastUpdated = "January 27, 2026";
 
     const tableOfContents: TableOfContentsItem[] = [
         { id: "acceptance", title: "1. Acceptance of Terms" },
         { id: "service-description", title: "2. Service Description" },
-        { id: "user-accounts", title: "3. User Accounts & Registration" },
-        { id: "subscription-plans", title: "4. Subscription Plans & Billing" },
-        { id: "usage-limitations", title: "5. Usage Limitations & Fair Use" },
-        { id: "file-uploads", title: "6. File Uploads & Data Processing" },
-        {
-            id: "intellectual-property",
-            title: "7. Intellectual Property Rights",
-        },
-        { id: "user-responsibilities", title: "8. User Responsibilities" },
-        { id: "service-availability", title: "9. Service Availability" },
-        { id: "termination", title: "10. Account Termination" },
-        { id: "liability", title: "11. Limitation of Liability" },
+        { id: "user-accounts", title: "3. User Accounts & Authentication" },
+        { id: "plans-billing-refunds", title: "4. Plans, Billing & Refunds" },
+        { id: "usage-limitations", title: "5. Usage Limits & Fair Use" },
+        { id: "uploads-data", title: "6. Uploads, Data Storage & Processing" },
+        { id: "user-responsibilities", title: "7. User Responsibilities" },
+        { id: "intellectual-property", title: "8. Intellectual Property" },
+        { id: "availability-changes", title: "9. Availability & Changes" },
+        { id: "termination", title: "10. Suspension & Termination" },
+        { id: "disclaimers-liability", title: "11. Disclaimers & Liability" },
         { id: "dispute-resolution", title: "12. Dispute Resolution" },
-        { id: "changes", title: "13. Changes to Terms" },
-        { id: "contact", title: "14. Contact Information" },
+        { id: "contact", title: "13. Contact" },
     ];
 
     const termsData = [
         {
             id: "acceptance",
             title: "1. Acceptance of Terms",
-            content: `By accessing or using HireQuill AI ("Service"), you agree to be bound by these Terms of Service ("Terms"). If you disagree with any part of these terms, you may not access the Service.\n\nThese Terms apply to all visitors, users, and others who access or use the Service. By using the Service, you represent that you are at least 18 years old and have the legal capacity to enter into these Terms.`,
+            content:
+                `By accessing or using HireQuill (the "Service"), you agree to these Terms of Service ("Terms"). ` +
+                `If you do not agree, do not use the Service.\n\n` +
+                `You must be at least 18 years old (or the age of majority in your jurisdiction) and capable of forming a binding contract to use the Service.`,
         },
         {
             id: "service-description",
             title: "2. Service Description",
-            content: `HireQuill AI is an AI-powered cover letter generation platform that helps job seekers create personalized, professional cover letters. The Service includes:\n\n• AI-powered cover letter generation based on uploaded CV/resume data\n• Company name normalization and resolution for accurate usage tracking\n• Customization options for job descriptions and company information\n• Storage and management of generated cover letters (for paid users)\n• Usage tracking and analytics for fair use enforcement\n• Throttling mechanisms to ensure optimal service performance\n\nThe Service uses OpenAI's artificial intelligence technology to analyze your CV, normalize company names, and generate cover letters. While we strive for accuracy and quality, AI-generated content may require review and editing before use in actual job applications.`,
+            content:
+                `HireQuill helps job seekers generate cover letters using AI.\n\n` +
+                `Typical flow:\n` +
+                `• You sign in\n` +
+                `• You provide a CV/resume file and a target company name and position title (and optionally a job description)\n` +
+                `• The Service generates a cover letter and returns it to you\n\n` +
+                `AI output may contain mistakes, omissions, or text that is not suitable for your situation. You are responsible for reviewing, editing, and validating any generated content before using it in applications.`,
         },
         {
             id: "user-accounts",
-            title: "3. User Accounts & Registration",
-            content: `To use certain features of the Service, you must register for an account through our authentication provider, Clerk. When you register, you agree to:\n\n• Provide accurate, current, and complete information\n• Maintain and promptly update your account information\n• Maintain the security of your authentication credentials\n• Accept responsibility for all activities that occur under your account\n• Notify us immediately of any unauthorized use of your account\n\n**Authentication Services:**\nWe use Clerk for user authentication and account management. Your authentication credentials (including passwords) are managed by Clerk, not stored directly in our systems. Clerk's terms of service and privacy policy govern authentication-related data handling.\n\nYou are responsible for safeguarding your account credentials. We cannot and will not be liable for any loss or damage arising from your failure to maintain account security or from issues with Clerk's authentication services.`,
+            title: "3. User Accounts & Authentication",
+            content:
+                `Authentication is provided by Clerk. We do not store your password.\n\n` +
+                `When you create an account or sign in, we store only the following user profile information in our database:\n` +
+                `• Full name\n` +
+                `• Email address\n` +
+                `• Profile image URL\n\n` +
+                `You are responsible for maintaining the confidentiality of your account access and for all activity that occurs under your account.`,
         },
         {
-            id: "subscription-plans",
-            title: "4. Subscription Plans & Billing",
-            content: `**Free Plan:**\n• Limited to 2 cover letter generations per calendar month\n• Basic customization features\n• Standard generation speed\n• No payment required\n• No credit card required\n• Generated cover letters are not stored in our database\n\n**Monthly Plan ($19/month):**\n• Unlimited cover letter generations (subject to fair use policy and throttling)\n• Advanced customization options\n• Priority generation speed\n• Multiple file format support (PDF, DOCX, DOC, plain text)\n• Priority email support\n• Generation history and analytics\n• Generated cover letters stored for 12 months\n\n**Forever/Lifetime Plan:**\n• Unlimited cover letter generations (no throttling)\n• All premium features included\n• One-time payment\n• Lifetime access with no recurring fees\n• Generated cover letters stored for 12 months\n\n**Billing Terms:**\n• Monthly subscriptions are billed in advance on a recurring basis\n• Payment is processed securely through our payment provider\n• Subscriptions automatically renew unless cancelled\n• You may cancel your subscription at any time\n• No refunds for partial months or unused generations\n• Price changes will be communicated 30 days in advance\n• Forever plan purchases are final and non-refundable\n\n**Payment Processing:**\nAll payments are processed securely through third-party payment processors. We do not store your complete payment information on our servers. Payment processing is subject to the payment provider's terms of service and privacy policy.`,
+            id: "plans-billing-refunds",
+            title: "4. Plans, Billing & Refunds",
+            content:
+                `We offer two user types:\n\n` +
+                `**Free Users**\n` +
+                `• Up to 2 cover letter generations per calendar month\n\n` +
+                `**Paid Users**\n` +
+                `• Unlimited generations, subject to reasonable use limits and throttling described in Section 5\n` +
+                `• Paid status lasts for one (1) month from the date of payment\n\n` +
+                `**Refund Policy (Paid Users)**\n` +
+                `If you generate no more than 2 cover letters during your paid period, you are eligible to request a refund for that paid period.\n\n` +
+                `We may deny refunds for fraud, abuse, chargeback abuse, or attempts to circumvent usage limits.`,
         },
         {
             id: "usage-limitations",
-            title: "5. Usage Limitations & Fair Use",
-            content: `**Generation Limits:**\n• Free Plan: Maximum 2 generations per calendar month\n• Monthly Plan: Unlimited generations with fair use policy and throttling\n• Forever Plan: Unlimited generations with no throttling\n\n**Throttling Policy (Monthly Plan):**\nTo ensure fair usage and optimal service performance for all users, the following throttling applies to Monthly Plan subscribers:\n• Per-Company Limit: After generating 4 cover letters for the same company within a week, additional requests for that company will experience response delays\n• Weekly Limit: After generating 200 total cover letters in a week, all subsequent requests will experience response delays\n• Throttling delays increase progressively based on usage levels\n• Throttling resets weekly (Monday 00:00 UTC)\n• Forever Plan users are exempt from throttling\n\n**Fair Use Policy:**\nWhile Monthly Plan users have unlimited generations, we reserve the right to limit usage that we determine to be:\n• Automated or bot-driven generation\n• Commercial resale or redistribution of generated content\n• Excessive usage that impacts service performance for other users\n• Usage patterns inconsistent with individual job search activities\n• Attempts to circumvent throttling mechanisms\n\n**File Upload Restrictions:**\n• Maximum file size: 10MB per CV/resume upload\n• Supported formats: PDF, DOCX, DOC, and plain text files\n• Files must contain legitimate resume/CV content\n• Files are scanned for malicious content before processing\n\n**API Usage:**\nDirect API access is not provided to standard users. Automated access or scraping of the Service is prohibited.`,
+            title: "5. Usage Limits & Fair Use",
+            content:
+                `We are built for individual job seekers. To protect the Service and other users, we apply fair use limits.\n\n` +
+                `**Free plan limit**\n` +
+                `• 2 generations per calendar month\n\n` +
+                `**Paid plan fair use & throttling**\n` +
+                `Paid users can generate an unlimited number of cover letters under reasonable constraints. We may throttle (slow down) requests when usage patterns indicate unusually heavy use, including:\n` +
+                `• More than 4 cover letters generated for the same company, and/or\n` +
+                `• More than 200 cover letters generated in a single week\n\n` +
+                `**Prohibited behavior**\n` +
+                `You agree not to:\n` +
+                `• Use bots, automation, scraping, or scripted requests to generate content at scale\n` +
+                `• Attempt to bypass limits or throttling\n` +
+                `• Resell, redistribute, or offer generated cover letters as a commercial service\n` +
+                `• Interfere with the Service, security, or other users\n\n` +
+                `We may suspend or terminate accounts that violate these rules.`,
         },
         {
-            id: "file-uploads",
-            title: "6. File Uploads & Data Processing",
-            content: `**Upload Requirements:**\nWhen uploading CV/resume files, you represent and warrant that:\n• You own or have the right to upload the content\n• The content does not violate any third-party rights\n• The content does not contain malicious code or viruses\n• The content is accurate and truthful\n• Files are in supported formats (PDF, DOCX, DOC, or plain text)\n• Files do not exceed 10MB in size\n\n**Data Processing:**\n• Uploaded files are processed by OpenAI's AI systems to extract relevant information\n• Company names are normalized and resolved using AI to ensure accurate usage tracking\n• Files are stored securely in our PostgreSQL database with encryption\n• We do not share your CV data with third parties for marketing purposes\n• You may delete your uploaded files at any time\n• Deleted files are permanently removed within 30 days\n\n**Data Retention:**\n• Active account data is retained for the duration of your account\n• CV/resume files are stored while your account is active\n• Generated cover letters: Stored for 12 months (paid users only); Not stored (free tier users)\n• Usage analytics and generation counts are retained for service optimization\n• After account deletion, personal data is permanently deleted within 30 days\n• Some data may be retained for 90 days for legal compliance purposes`,
-        },
-        {
-            id: "intellectual-property",
-            title: "7. Intellectual Property Rights",
-            content: `**Your Content Ownership:**\nYou retain all ownership rights to:\n• Your uploaded CV/resume content\n• Generated cover letters created using the Service\n• Any modifications you make to generated content\n\nBy using the Service, you grant us a limited license to:\n• Process your CV data through OpenAI's API to generate cover letters\n• Normalize and resolve company names using AI technology\n• Store your content on our servers (for paid users)\n• Track usage patterns for fair use enforcement\n• Use anonymized, aggregated data to improve service performance\n\n**Our Intellectual Property:**\nThe Service, including its original content, features, functionality, and platform design, is owned by HireQuill AI and is protected by international copyright, trademark, and other intellectual property laws.\n\n**Third-Party AI Technology:**\nThe Service uses OpenAI's AI technology for cover letter generation and company name resolution. OpenAI's technology and models are owned by OpenAI and subject to OpenAI's terms of service. We have a Data Processing Agreement with OpenAI that ensures your data is not used for training their models.\n\n**Generated Content:**\nWhile you own the generated cover letters, you acknowledge that:\n• AI-generated content may not be entirely unique\n• Similar content may be generated for other users\n• Content is generated using OpenAI's AI models, which we do not control\n• You are responsible for reviewing and editing generated content\n• We do not guarantee the originality, accuracy, or quality of AI-generated text\n• Company name normalization may result in variations or errors`,
+            id: "uploads-data",
+            title: "6. Uploads, Data Storage & Processing",
+            content:
+                `**What you submit**\n` +
+                `To generate a cover letter, you may submit:\n` +
+                `• A CV/resume file\n` +
+                `• Company name\n` +
+                `• Position title\n` +
+                `• Optional job description\n\n` +
+                `**Where data is stored**\n` +
+                `We use Supabase to store application data.\n\n` +
+                `**CV file storage**\n` +
+                `• Free users: We do not store your CV file in our database.\n` +
+                `• Paid users: We store your CV file in Supabase in Base64 form so we can provide the Service.\n\n` +
+                `**Processing**\n` +
+                `Your inputs are processed to generate a cover letter. You understand that submitting personal information (including employment history) is voluntary and done at your discretion.\n\n` +
+                `**Deletion**\n` +
+                `If you delete your account (or request deletion), we will remove personal data from our systems within a reasonable timeframe, except where retention is required for legal, security, or billing compliance.`,
         },
         {
             id: "user-responsibilities",
-            title: "8. User Responsibilities",
-            content: `You agree to use the Service only for lawful purposes and in accordance with these Terms. You agree NOT to:\n\n• Use the Service for any illegal or unauthorized purpose\n• Upload false, misleading, or fraudulent information\n• Attempt to gain unauthorized access to the Service or related systems\n• Interfere with or disrupt the Service or servers\n• Use automated systems to access the Service without permission\n• Resell or redistribute generated content commercially\n• Impersonate another person or entity\n• Upload content containing viruses or malicious code\n• Violate any applicable laws or regulations\n\n**Content Accuracy:**\nYou are solely responsible for:\n• Reviewing all generated cover letters before use\n• Ensuring accuracy of information in job applications\n• Customizing generated content to match specific job requirements\n• Verifying that generated content meets your standards`,
+            title: "7. User Responsibilities",
+            content:
+                `You agree that:\n` +
+                `• You have the rights necessary to upload and use the CV/resume and any content you submit\n` +
+                `• You will not submit unlawful, infringing, or confidential third-party content without permission\n` +
+                `• You will review and verify generated cover letters before use\n` +
+                `• You are responsible for any job application outcomes and communications\n\n` +
+                `We are not a recruiter, employer, or employment agency, and we do not guarantee interviews, offers, or hiring outcomes.`,
         },
         {
-            id: "service-availability",
-            title: "9. Service Availability",
-            content: `**Uptime Commitment:**\nWe strive to maintain 99.5% uptime for the Service, but we do not guarantee uninterrupted access. The Service may be unavailable due to:\n• Scheduled maintenance (announced in advance when possible)\n• Emergency maintenance or security updates\n• Technical issues or system failures\n• Third-party service disruptions (Clerk authentication, OpenAI API, payment processors, database services)\n• Force majeure events\n\n**Third-Party Dependencies:**\nThe Service depends on third-party services including:\n• Clerk for user authentication and account management\n• OpenAI API for AI-powered cover letter generation and company name resolution\n• Payment processors for subscription management\n• Database and hosting infrastructure\n\nService availability is subject to the reliability of these third-party services. We are not responsible for outages or issues caused by third-party service providers.\n\n**Service Modifications:**\nWe reserve the right to:\n• Modify or discontinue features of the Service\n• Update our AI models and generation algorithms\n• Change pricing with 30 days notice\n• Implement new usage limitations or restrictions\n• Switch third-party service providers when necessary\n\n**No Warranty:**\nThe Service is provided "as is" without warranties of any kind, either express or implied, including but not limited to warranties of merchantability, fitness for a particular purpose, or non-infringement.`,
+            id: "intellectual-property",
+            title: "8. Intellectual Property",
+            content:
+                `**Your content**\n` +
+                `You keep ownership of your uploaded CV/resume and the content you provide.\n\n` +
+                `**Generated output**\n` +
+                `As between you and HireQuill, you may use generated cover letters for your personal job search. You are responsible for ensuring the output is suitable, accurate, and does not violate any third-party rights.\n\n` +
+                `**Our service**\n` +
+                `HireQuill, its branding, UI, software, and underlying systems are owned by us and protected by applicable intellectual property laws.`,
+        },
+        {
+            id: "availability-changes",
+            title: "9. Availability & Changes",
+            content:
+                `We aim to keep the Service available, but it may occasionally be interrupted due to maintenance, updates, outages, or third-party dependencies.\n\n` +
+                `We may change, add, or remove features at any time. If we make material changes to these Terms, we will update the "Last Updated" date and may provide additional notice within the Service.`,
         },
         {
             id: "termination",
-            title: "10. Account Termination",
-            content: `**Your Right to Terminate:**\nYou may terminate your account at any time by:\n• Cancelling your subscription through account settings\n• Contacting our support team\n• Deleting your account through the dashboard\n\nUpon termination:\n• Your subscription will not renew\n• You will retain access until the end of your billing period\n• No refunds will be provided for unused time\n• Your data will be deleted according to our retention policy\n\n**Our Right to Terminate:**\nWe may suspend or terminate your account immediately if:\n• You violate these Terms of Service\n• You engage in fraudulent or illegal activities\n• Your usage violates our Fair Use Policy\n• Your payment method fails or is declined\n• We are required to do so by law\n\n**Effect of Termination:**\nUpon termination:\n• Your access to the Service will cease immediately\n• Generated content may be deleted after 90 days\n• Outstanding payments remain due\n• Provisions regarding intellectual property, liability, and dispute resolution survive termination`,
+            title: "10. Suspension & Termination",
+            content:
+                `You may stop using the Service at any time.\n\n` +
+                `We may suspend or terminate access if we reasonably believe you:\n` +
+                `• Violated these Terms\n` +
+                `• Abused free/paid limits or throttling\n` +
+                `• Used automation or attempted to bypass restrictions\n` +
+                `• Engaged in fraud or unlawful activity\n\n` +
+                `Upon termination, your right to use the Service ends immediately.`,
         },
         {
-            id: "liability",
-            title: "11. Limitation of Liability",
-            content: `**Disclaimer:**\nTo the maximum extent permitted by law, HireQuill AI shall not be liable for:\n• Any indirect, incidental, special, consequential, or punitive damages\n• Loss of profits, revenue, data, or business opportunities\n• Damages resulting from use or inability to use the Service\n• Damages resulting from AI-generated content quality or accuracy\n• Damages resulting from unauthorized access to your account\n• Damages resulting from third-party services or integrations (Clerk, OpenAI, payment processors, hosting providers)\n• Service interruptions or failures caused by third-party service providers\n• Data loss or corruption due to third-party service issues\n\n**Maximum Liability:**\nOur total liability to you for all claims arising from or related to the Service shall not exceed the amount you paid us in the 12 months preceding the claim, or $100, whichever is greater.\n\n**AI-Generated Content:**\nWe specifically disclaim liability for:\n• Accuracy or quality of generated cover letters\n• Job application outcomes or hiring decisions\n• Plagiarism or similarity to other content\n• Errors or omissions in generated text\n• Company name resolution accuracy or errors\n\nYou acknowledge that AI-generated content requires human review and editing before use in actual job applications. The Service uses OpenAI's API, and we are not responsible for the quality, accuracy, or appropriateness of content generated by OpenAI's AI models.\n\n**Third-Party Service Limitations:**\nWe are not liable for:\n• Issues with Clerk authentication services\n• OpenAI API outages, errors, or content quality issues\n• Payment processor failures or transaction issues\n• Database or hosting infrastructure problems\n• Any other third-party service disruptions`,
+            id: "disclaimers-liability",
+            title: "11. Disclaimers & Liability",
+            content:
+                `**No warranty**\n` +
+                `The Service is provided "as is" and "as available" without warranties of any kind.\n\n` +
+                `**AI limitations**\n` +
+                `We do not guarantee that generated cover letters will be accurate, complete, unique, or fit for your purpose.\n\n` +
+                `**Limitation of liability**\n` +
+                `To the maximum extent permitted by law, HireQuill will not be liable for indirect, incidental, special, consequential, or punitive damages, or for loss of data, profits, or business opportunities.\n\n` +
+                `If we are found liable for any claim, our total liability will not exceed the amount you paid us for the paid period giving rise to the claim.`,
         },
         {
             id: "dispute-resolution",
             title: "12. Dispute Resolution",
-            content: `**Governing Law:**\nThese Terms shall be governed by and construed in accordance with the laws of the United States, without regard to its conflict of law provisions.\n\n**Informal Resolution:**\nBefore filing a claim, you agree to contact us at support@hirequill.ai to attempt to resolve the dispute informally. We will attempt to resolve disputes within 30 days.\n\n**Arbitration Agreement:**\nIf informal resolution fails, you agree that disputes will be resolved through binding arbitration rather than in court, except that you may assert claims in small claims court if they qualify.\n\n**Class Action Waiver:**\nYou agree to resolve disputes with us on an individual basis and waive your right to participate in class actions or class arbitrations.\n\n**Exceptions:**\nEither party may seek injunctive or other equitable relief in court to prevent infringement of intellectual property rights.`,
-        },
-        {
-            id: "changes",
-            title: "13. Changes to Terms",
-            content: `We reserve the right to modify these Terms at any time. When we make changes:\n\n• We will update the "Last Updated" date at the top of this page\n• For material changes, we will provide notice via email or Service notification\n• Changes become effective 30 days after posting\n• Continued use of the Service after changes constitutes acceptance\n\n**Your Options:**\nIf you disagree with modified Terms:\n• You may terminate your account before changes take effect\n• You will not be charged for the next billing period if you cancel\n• You may export your data before termination\n\n**Version History:**\nPrevious versions of these Terms are available upon request.`,
+            content:
+                `Please contact us first so we can try to resolve issues informally.\n\n` +
+                `If a dispute cannot be resolved informally, it will be resolved in the courts of the jurisdiction where HireQuill is established, unless applicable law requires otherwise.`,
         },
         {
             id: "contact",
-            title: "14. Contact Information",
-            content: `For questions about these Terms of Service, please contact us:\n\n**Email:** support@hirequill.ai\n**Response Time:** Within 48 hours for general inquiries\n**Support Hours:** Monday-Friday, 9:00 AM - 6:00 PM EST\n\n**Mailing Address:**\nHireQuill AI\nLegal Department\n123 Innovation Drive\nSan Francisco, CA 94102\nUnited States\n\n**Legal Notices:**\nFor legal notices or service of process, please use the mailing address above and mark correspondence "ATTN: Legal Department."`,
+            title: "13. Contact",
+            content:
+                `If you have questions about these Terms, contact us:\n\n` +
+                `**Email:** support@hirequill.ai`,
         },
     ];
 
@@ -152,7 +228,8 @@ const TermsContent = () => {
 
         window.addEventListener("scroll", handleScroll);
         return () => window.removeEventListener("scroll", handleScroll);
-    }, [isHydrated, termsData]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isHydrated]);
 
     if (!isHydrated) {
         return (
@@ -287,10 +364,9 @@ const TermsContent = () => {
                                             Questions About These Terms?
                                         </h3>
                                         <p className="text-sm text-muted-foreground mb-4 font-body">
-                                            We're here to help. If you have any
-                                            questions about these Terms of
-                                            Service, please don't hesitate to
-                                            reach out to our support team.
+                                            If you have any questions about
+                                            these Terms of Service, contact our
+                                            support team.
                                         </p>
                                         <a
                                             href="mailto:support@hirequill.ai"
@@ -300,9 +376,7 @@ const TermsContent = () => {
                                                 name="EnvelopeIcon"
                                                 size={16}
                                             />
-                                            <span>
-                                                support@hirequill.ai
-                                            </span>
+                                            <span>support@hirequill.ai</span>
                                         </a>
                                     </div>
                                 </div>

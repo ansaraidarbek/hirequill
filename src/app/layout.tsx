@@ -62,7 +62,7 @@ export const metadata: Metadata = {
             "Generate personalized, professional cover letters in 10 seconds with AI-powered automation. Apply faster, smarter, without burning out.",
         images: [
             {
-                url: "/og-image.png",
+                url: "/assets/images/preview.webp",
                 width: 1200,
                 height: 630,
                 alt: "HireQuill AI - AI-Powered Cover Letter Generator",
@@ -74,7 +74,7 @@ export const metadata: Metadata = {
         title: "HireQuill AI - AI-Powered Cover Letter Generator",
         description:
             "Generate personalized, professional cover letters in 10 seconds with AI-powered automation.",
-        images: ["/og-image.png"],
+        images: ["/assets/images/preview.webp"],
         creator: "@hirequillai",
     },
     robots: {
