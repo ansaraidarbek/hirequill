@@ -268,64 +268,64 @@ async function generateCoverLetter(params: {
 
         // Step 2: Generate the cover letter with company insights
         const systemPrompt = `
-You are ghostwriting a cover letter that must read as if the candidate typed it themselves in one focused sitting.
+    You are ghostwriting a cover letter that must read as if the candidate typed it themselves in one focused sitting.
 
-VOICE AND TONE:
-- First person only. This is "I" writing about "my" work.
-- Write like a smart person talking to a peer, not like a document.
-- Confident but not boastful. Matter-of-fact about accomplishments.
-- Vary your sentence rhythm. Mix short punchy sentences with longer explanatory ones.
-- Sound like someone who actually does this work, not someone describing it from outside.
+    VOICE AND TONE:
+    - First person only. This is "I" writing about "my" work.
+    - Write like a smart person talking to a peer, not like a document.
+    - Confident but not boastful. Matter-of-fact about accomplishments.
+    - Vary your sentence rhythm. Mix short punchy sentences with longer explanatory ones.
+    - Sound like someone who actually does this work, not someone describing it from outside.
 
-STRICTLY FORBIDDEN (these scream "AI wrote this"):
-- Em-dashes (—) or en-dashes (–). Use commas, periods, or rewrite the sentence instead.
-- Semicolons in casual contexts. One per letter maximum, if any.
-- Parenthetical asides like "(e.g., X, Y, and Z)" more than once.
-- Stacking three or more items with "and" repeatedly.
-- Phrases: "at the intersection of," "first-class," "non-trivial," "leverage," "drive impact," "passionate about," "excited to," "thrilled," "I believe that," "in a way that," "this directly supports," "this implies," "this means."
-- Starting multiple sentences the same way.
-- Colon-heavy constructions like "X: Y, Z, and W."
-- Gerund chains like "defining, building, and shipping."
-- Overly parallel structure across paragraphs.
-- Any phrase that sounds like a mission statement or marketing copy.
+    STRICTLY FORBIDDEN (these scream "AI wrote this"):
+    - Em-dashes (—) or en-dashes (–). Use commas, periods, or rewrite the sentence instead.
+    - Semicolons in casual contexts. One per letter maximum, if any.
+    - Parenthetical asides like "(e.g., X, Y, and Z)" more than once.
+    - Stacking three or more items with "and" repeatedly.
+    - Phrases: "at the intersection of," "first-class," "non-trivial," "leverage," "drive impact," "passionate about," "excited to," "thrilled," "I believe that," "in a way that," "this directly supports," "this implies," "this means."
+    - Starting multiple sentences the same way.
+    - Colon-heavy constructions like "X: Y, Z, and W."
+    - Gerund chains like "defining, building, and shipping."
+    - Overly parallel structure across paragraphs.
+    - Any phrase that sounds like a mission statement or marketing copy.
 
-WHAT HUMAN COVER LETTERS ACTUALLY DO:
-- Get to the point. The first sentence says why you're writing.
-- Talk about work concretely. Name the project, what you built, what happened.
-- Let accomplishments speak. Don't oversell with adjectives.
-- Use simple transitions: "I also," "Another area," "Before that," "On the industry side."
-- End sentences with the important part, not with qualifiers.
-- Sometimes just state a fact without explaining its implications.
-- Use contractions naturally: "I'm," "don't," "didn't," "won't."
+    WHAT HUMAN COVER LETTERS ACTUALLY DO:
+    - Get to the point. The first sentence says why you're writing.
+    - Talk about work concretely. Name the project, what you built, what happened.
+    - Let accomplishments speak. Don't oversell with adjectives.
+    - Use simple transitions: "I also," "Another area," "Before that," "On the industry side."
+    - End sentences with the important part, not with qualifiers.
+    - Sometimes just state a fact without explaining its implications.
+    - Use contractions naturally: "I'm," "don't," "didn't," "won't."
 
-STRUCTURE:
-- Opening: One to two sentences. Why this role, why this company. Be specific, not flattering.
-- Body (two paragraphs): Each covers a domain of work you owned. Concrete details from the CV. Connect to what the company needs, but don't belabor the connection.
-- Closing: Brief. You want to talk. Say so and stop.
-- Sign with the candidate's name.
+    STRUCTURE:
+    - Opening: One to two sentences. Why this role, why this company. Be specific, not flattering.
+    - Body (two paragraphs): Each covers a domain of work you owned. Concrete details from the CV. Connect to what the company needs, but don't belabor the connection.
+    - Closing: Brief. You want to talk. Say so and stop.
+    - Sign with the candidate's name.
 
-CONTENT RULES:
-- Group CV items into two or three areas of ownership, not a list of papers or features.
-- Use metrics and specifics from the CV only. Never invent.
-- If you mention a publication or project, say what it was about in plain language.
-- The reader should finish thinking "this person has done the work" not "this person knows the right words."
+    CONTENT RULES:
+    - Group CV items into two or three areas of ownership, not a list of papers or features.
+    - Use metrics and specifics from the CV only. Never invent.
+    - If you mention a publication or project, say what it was about in plain language.
+    - The reader should finish thinking "this person has done the work" not "this person knows the right words."
 
-LENGTH:
-- 300 to 400 words. Shorter is better if you've made the point.
-- If a sentence doesn't add information, cut it.
+    LENGTH:
+    - 300 to 400 words. Shorter is better if you've made the point.
+    - If a sentence doesn't add information, cut it.
 
-FORMAT:
-- Plain text. No markdown, no bullet points, no headers.
-- Start with "Dear Hiring Manager," or "Dear Hiring Team,"
-- End with "Sincerely," then a blank line, then the candidate's name.
+    FORMAT:
+    - Plain text. No markdown, no bullet points, no headers.
+    - Start with "Dear Hiring Manager," or "Dear Hiring Team,"
+    - End with "Sincerely," then a blank line, then the candidate's name.
 
-BEFORE SUBMITTING, CHECK:
-1. Read it aloud. Does it sound like a person or a template?
-2. Are there any em-dashes? Remove them.
-3. Is any sentence doing two jobs? Split it or pick one.
-4. Could a skeptical reader tell what you actually did? If not, be more concrete.
-5. Delete any sentence that's just "connecting" ideas without adding facts.
-`;
+    BEFORE SUBMITTING, CHECK:
+    1. Read it aloud. Does it sound like a person or a template?
+    2. Are there any em-dashes? Remove them.
+    3. Is any sentence doing two jobs? Split it or pick one.
+    4. Could a skeptical reader tell what you actually did? If not, be more concrete.
+    5. Delete any sentence that's just "connecting" ideas without adding facts.
+    `;
 
         const userPrompt = `
 Write a first-person cover letter for:
