@@ -48,7 +48,7 @@ const TermsSection = ({ id, title, content }: TermsSectionProps) => {
     };
 
     return (
-        <section id={id} className="scroll-mt-24">
+        <section id={id} className="mb-12 scroll-mt-24">
             <h2 className="text-2xl font-bold text-foreground mb-4 font-headline">
                 {title}
             </h2>

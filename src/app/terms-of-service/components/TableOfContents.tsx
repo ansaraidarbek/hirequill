@@ -101,8 +101,8 @@ export default function TableOfContents({ items }: TableOfContentsProps) {
                 className={`
         lg:sticky lg:top-24 bg-card rounded-lg border border-border p-6
         lg:block ${
-            isOpen ? "fixed bottom-24 right-6 left-6 z-50 shadow-xl" : "hidden"
-        }
+                    isOpen ? "fixed bottom-24 right-6 left-6 z-50 shadow-xl" : "hidden"
+                }
       `}
             >
                 <div className="flex items-center justify-between mb-4">
@@ -120,7 +120,7 @@ export default function TableOfContents({ items }: TableOfContentsProps) {
                     )}
                 </div>
                 <nav>
-                    <ul className="space-y-2 max-h-[60vh] overflow-y-auto">
+                    <ul className="space-y-2 max-h-[80vh] overflow-y-auto">
                         {items.map((item) => (
                             <li key={item.id}>
                                 <button

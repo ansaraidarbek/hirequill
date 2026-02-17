@@ -1,5 +1,3 @@
-"use client";
-
 import PolicySection from "./PolicySection";
 import PolicyList from "./PolicyList";
 import ContactInfo from "./ContactInfo";
