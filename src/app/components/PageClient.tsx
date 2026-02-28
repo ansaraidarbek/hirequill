@@ -27,7 +27,10 @@ export default function PageClient({
                 position: "relative",
             }}
         >
-            <Header onLoginClick={openSignIn} />
+            <Header
+                onLoginClick={openSignIn}
+                currentPlan={initialData.currentPlan}
+            />
             <main id="main-content" role="main">
                 <MainLandingInteractive
                     onLoginClick={openSignIn}

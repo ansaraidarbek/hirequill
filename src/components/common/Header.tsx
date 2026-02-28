@@ -8,10 +8,16 @@ import AuthButton from "./AuthButton";
 interface HeaderProps {
     className?: string;
     onLoginClick: () => void;
+    currentPlan?: "monthly" | "forever" | "free" | null;
 }
 
-const Header = ({ className = "", onLoginClick }: HeaderProps) => {
+const Header = ({
+    className = "",
+    onLoginClick,
+    currentPlan = null,
+}: HeaderProps) => {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const [isPortalLoading, setIsPortalLoading] = useState(false);
 
     const navigationItems = [
         {
@@ -35,6 +41,33 @@ const Header = ({ className = "", onLoginClick }: HeaderProps) => {
 
     const toggleMobileMenu = () => {
         setIsMobileMenuOpen(!isMobileMenuOpen);
+    };
+
+    const handleManageSubscription = async () => {
+        setIsPortalLoading(true);
+        try {
+            // Server identifies the user, looks up providerSubscriptionId,
+            // fetches Lemon Squeezy subscription, and returns the portal URL.
+            const response = await fetch("/api/customer-portal");
+
+            const { portalUrl, message } = (await response.json()) as {
+                portalUrl?: string;
+                message?: string;
+            };
+
+            if (!response.ok || !portalUrl) {
+                throw new Error(message || "Unable to load customer portal");
+            }
+
+            window.location.assign(portalUrl);
+        } catch (error) {
+            console.error("Failed to open customer portal", error);
+            alert(
+                "We couldn't open the subscription portal. Please try again in a moment.",
+            );
+        } finally {
+            setIsPortalLoading(false);
+        }
     };
 
     return (
@@ -122,6 +155,18 @@ const Header = ({ className = "", onLoginClick }: HeaderProps) => {
                     </nav>
 
                     <div className="hidden md:flex items-center space-x-4">
+                        {currentPlan === "monthly" && (
+                            <button
+                                type="button"
+                                onClick={handleManageSubscription}
+                                disabled={isPortalLoading}
+                                className="px-6 py-2.5 text-sm font-semibold text-primary border border-primary rounded-md hover:bg-primary/10 transition-all duration-200 font-cta disabled:opacity-60 disabled:cursor-not-allowed"
+                            >
+                                {isPortalLoading
+                                    ? "Opening Portal..."
+                                    : "Manage Subscription"}
+                            </button>
+                        )}
                         <AuthButton onLoginClick={onLoginClick} />
                     </div>
 
@@ -153,6 +198,21 @@ const Header = ({ className = "", onLoginClick }: HeaderProps) => {
                             </Link>
                         ))}
                         <div className="pt-4 border-t border-border">
+                            {currentPlan === "monthly" && (
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        handleManageSubscription();
+                                        setIsMobileMenuOpen(false);
+                                    }}
+                                    disabled={isPortalLoading}
+                                    className="mb-3 block w-full px-6 py-3 text-center text-sm font-semibold text-primary border border-primary rounded-md hover:bg-primary/10 transition-all duration-200 font-cta disabled:opacity-60 disabled:cursor-not-allowed"
+                                >
+                                    {isPortalLoading
+                                        ? "Opening Portal..."
+                                        : "Manage Subscription"}
+                                </button>
+                            )}
                             <AuthButton
                                 onLoginClick={onLoginClick}
                                 className="block w-full px-6 py-3 text-center"
