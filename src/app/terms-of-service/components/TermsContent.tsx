@@ -58,18 +58,18 @@ const termsData = [
             `HireQuill offers both free and paid subscription plans.\n\n` +
             `**Free Plan**\n` +
             `• Up to 2 cover letter generations per calendar month\n\n` +
-            `**Paid Subscription**\n` +
+            `**Monthly Subscription**\n` +
             `• Monthly subscription providing access to unlimited cover letter generations, subject to reasonable usage policies described in Section 5\n` +
-            `• Subscriptions renew monthly unless cancelled before the renewal date\n\n` +
+            `• Subscriptions renew automatically every month unless cancelled before the renewal date\n\n` +
             `**Payments**\n` +
-            `All payments are processed by Paddle, our Merchant of Record. By completing a purchase, you enter into a transaction with Paddle under Paddle’s Consumer Terms and Conditions.\n\n` +
-            `**Refunds & Consumer Cancellation Rights**\n` +
-            `If you are a Consumer, you may have the right to cancel your initial purchase within 14 days from the date of purchase, in accordance with Paddle’s Consumer Terms and applicable consumer protection laws.\n\n` +
-            `Refunds are handled by Paddle in accordance with Paddle’s refund policy.\n\n` +
-            `To request a refund, you may:\n` +
-            `• Contact Paddle directly through their support channels, or\n` +
-            `• Contact us at support@hirequill.dev, and we will assist in routing your request.\n\n` +
-            `Refund eligibility, processing timelines, and any applicable exceptions are governed by Paddle’s Consumer Terms and Conditions.`,
+            `All payments are securely processed by Lemon Squeezy, our Merchant of Record. By completing a purchase, you enter into a transaction with Lemon Squeezy under their Terms and Conditions.\n\n` +
+            `**Refund Policy**\n` +
+            `We offer refunds under the following condition:\n\n` +
+            `• If no more than 2 cover letters were generated during the active monthly subscription period, you are eligible for a full refund.\n\n` +
+            `If more than 2 cover letters were generated during the subscription period, the subscription is considered consumed and is not eligible for a refund.\n\n` +
+            `Refund requests must be submitted within 14 days of the original purchase date.\n\n` +
+            `To request a refund, please contact us at support@hirequill.dev with your purchase details. Approved refunds will be processed through Lemon Squeezy in accordance with their payment processing policies.\n\n` +
+            `We reserve the right to deny refund requests in cases of fraud, abuse, or violation of our Terms of Service.`,
     },
     {
         id: "usage-limitations",
