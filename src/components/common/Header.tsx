@@ -59,7 +59,8 @@ const Header = ({
                 throw new Error(message || "Unable to load customer portal");
             }
 
-            window.location.assign(portalUrl);
+            // window.location.assign(portalUrl);
+            window.open(portalUrl, "_blank");
         } catch (error) {
             console.error("Failed to open customer portal", error);
             alert(
