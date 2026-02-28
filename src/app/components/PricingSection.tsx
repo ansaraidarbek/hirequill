@@ -205,7 +205,9 @@ const PricingSection = ({ onLoginClick, currentPlan }: PricingSectionProps) => {
                                             : "bg-card text-foreground border-2 border-border hover:border-primary"
                                     }`}
                                 >
-                                    {isLoading ? tier.loadingCta : tier.cta}
+                                    {tier?.id === "monthly" && isLoading
+                                        ? tier.loadingCta
+                                        : tier.cta}
                                 </button>
                                 {tier.id === "free" && (
                                     <p className="text-xs text-center text-muted-foreground mt-4 font-body">
