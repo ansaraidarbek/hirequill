@@ -7,6 +7,7 @@ import { Limitations } from "@/db/types/limitationType";
 import { useSignInModal } from "@/hooks/useSignIn";
 import { CoverLetterInformation } from "@/components/utils/prepareInformation";
 import { CVType } from "@/db/types/cvType";
+import { SignedIn } from "@/services/clerk/components/SignInStatus";
 const SESSION_STORAGE_KEY = "coverLetterFormData";
 
 interface StoredFormData {
@@ -296,26 +297,28 @@ const GenerateCoverLetter = ({
                     variant="solid"
                 />
             </div>
-            {Boolean(localLimitations?.exist) && (
-                <>
-                    {localLimitations?.amount <= 0 ? (
-                        <div className="px-4 py-3 bg-error/10 border border-error/20 rounded-lg">
-                            <p className="text-sm text-error font-body">
-                                You have reached your limit of 2 generations. Please
-                                upgrade to a paid plan to continue generating
-                                cover letters.
-                            </p>
-                        </div>
-                    ) : localLimitations.amount === 1 ? (
-                        <div className="px-4 py-3 bg-warning/10 border border-warning/20 rounded-lg">
-                            <p className="text-sm text-warning font-body">
-                                You have {localLimitations.amount} generations
-                                left.
-                            </p>
-                        </div>
-                    ) : null}
-                </>
-            )}
+            <SignedIn>
+                {Boolean(localLimitations?.exist) && (
+                    <>
+                        {localLimitations?.amount <= 0 ? (
+                            <div className="px-4 py-3 bg-error/10 border border-error/20 rounded-lg">
+                                <p className="text-sm text-error font-body">
+                                    You have reached your limit of 2
+                                    generations. Please upgrade to a paid plan
+                                    to continue generating cover letters.
+                                </p>
+                            </div>
+                        ) : localLimitations.amount === 1 ? (
+                            <div className="px-4 py-3 bg-warning/10 border border-warning/20 rounded-lg">
+                                <p className="text-sm text-warning font-body">
+                                    You have {localLimitations.amount}{" "}
+                                    generations left.
+                                </p>
+                            </div>
+                        ) : null}
+                    </>
+                )}
+            </SignedIn>
 
             <div className="space-y-4">
                 <div>

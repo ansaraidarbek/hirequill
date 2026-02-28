@@ -1,4 +1,4 @@
-export const getDay = (targetDay: string | undefined) => {
+export const getDay = (targetDay?: string) => {
     const day = targetDay ? new Date(targetDay).getDay() : new Date().getDay();
     switch (day) {
         case 0:

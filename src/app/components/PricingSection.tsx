@@ -190,31 +190,20 @@ const PricingSection = ({ onLoginClick, currentPlan }: PricingSectionProps) => {
                                     </li>
                                 ))}
                             </ul>
-
-                            <CheckButton
-                                isLogin={tier.id === "free"}
-                                paidUser={Boolean(
-                                    currentPlan && currentPlan !== "free",
-                                )}
-                            >
-                                <button
+                            {tier.id === "free" && (
+                                <LoginButton
                                     onClick={tier.onClick}
-                                    className={`w-full px-6 py-4 rounded-lg font-semibold text-lg transition-all duration-200 font-cta ${
-                                        tier.popular
-                                            ? "bg-destructive text-destructive-foreground hover:shadow-xl hover:scale-105"
-                                            : "bg-card text-foreground border-2 border-border hover:border-primary"
-                                    }`}
-                                >
-                                    {tier?.id === "monthly" && isLoading
-                                        ? tier.loadingCta
-                                        : tier.cta}
-                                </button>
-                                {tier.id === "free" && (
-                                    <p className="text-xs text-center text-muted-foreground mt-4 font-body">
-                                        No credit card required
-                                    </p>
-                                )}
-                            </CheckButton>
+                                    text={tier.cta}
+                                />
+                            )}
+                            {tier.id === "monthly" && (
+                                <SubscribeButton
+                                    onClick={tier.onClick}
+                                    isLoading={isLoading}
+                                    tier={tier}
+                                    currentPlan={currentPlan}
+                                />
+                            )}
                         </div>
                     ))}
                 </div>
@@ -223,19 +212,53 @@ const PricingSection = ({ onLoginClick, currentPlan }: PricingSectionProps) => {
     );
 };
 
-const CheckButton = ({
-    isLogin,
-    paidUser,
-    children,
+const LoginButton = ({
+    onClick,
+    text,
 }: {
-    isLogin: boolean;
-    children: React.ReactNode;
-    paidUser: boolean;
+    onClick: () => void;
+    text: string;
 }) => {
-    return isLogin ? (
-        <SignedOut>{children}</SignedOut>
-    ) : paidUser ? null : (
-        children
+    return (
+        <SignedOut>
+            <button
+                onClick={onClick}
+                className={`w-full px-6 py-4 rounded-lg font-semibold text-lg transition-all duration-200 font-cta bg-card text-foreground border-2 border-border hover:border-primary`}
+            >
+                {text}
+            </button>
+            <p className="text-xs text-center text-muted-foreground mt-4 font-body">
+                No credit card required
+            </p>
+        </SignedOut>
+    );
+};
+
+const SubscribeButton = ({
+    onClick,
+    isLoading,
+    tier,
+    currentPlan,
+}: {
+    onClick: () => void;
+    isLoading: boolean;
+    tier: PricingTier;
+    currentPlan: "monthly" | "forever" | "free" | null;
+}) => {
+    const paidUser = Boolean(
+        currentPlan === "monthly" || currentPlan === "forever",
+    );
+    return (
+        <SignedIn>
+            {!paidUser && (
+                <button
+                    onClick={onClick}
+                    className={`w-full px-6 py-4 rounded-lg font-semibold text-lg transition-all duration-200 font-cta bg-destructive text-destructive-foreground hover:shadow-xl hover:scale-105`}
+                >
+                    {isLoading ? tier.loadingCta : tier.cta}
+                </button>
+            )}
+        </SignedIn>
     );
 };
 
