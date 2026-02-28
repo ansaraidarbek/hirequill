@@ -24,7 +24,6 @@ type PricingSectionProps = {
 };
 
 const PricingSection = ({ onLoginClick, currentPlan }: PricingSectionProps) => {
-    console.log("currentPlan:", currentPlan);
     const [isLoading, setIsLoading] = useState(false);
 
     const handleSubscribe = async () => {
@@ -233,8 +232,9 @@ const CheckButton = ({
 }) => {
     return isLogin ? (
         <SignedOut>{children}</SignedOut>
-    ) : paidUser ? null : // children
-    null;
+    ) : paidUser ? null : (
+        children
+    );
 };
 
 export default PricingSection;
