@@ -45,8 +45,8 @@ const nextConfig: NextConfig = {
                         value: "on",
                     },
                     {
-                        key: "X-Frame-Options",
-                        value: "SAMEORIGIN",
+                        key: "Content-Security-Policy",
+                        value: "frame-ancestors 'self' https://ansaraidarbek.github.io http://localhost:5173",
                     },
                     {
                         key: "X-Content-Type-Options",
